@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Vocab with Teacher Jeebali — Yaqueen A2 Class 01 (Part 02)</title>
+  <style>
+    :root {
+      --paper: #fffdf8;
+      --ink: #1f2937;
+      --muted: #5f6b7a;
+      --brand: #1f5f9d;
+      --accent: #eef6ff;
+      --border: #d8d1c3;
+      --shadow: 0 12px 30px rgba(0,0,0,.08);
+      --safe-top: env(safe-area-inset-top, 0px);
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: Arial, Helvetica, sans-serif; background: linear-gradient(180deg, #f9f6ef, #efe8db); color: var(--ink); }
+    .app { max-width: 980px; margin: 0 auto; padding: calc(18px + var(--safe-top)) 16px calc(24px + var(--safe-bottom)); }
+    .hero { background: linear-gradient(135deg, var(--brand), #2b7bc1); color: white; border-radius: 28px; padding: 20px; box-shadow: var(--shadow); }
+    .hero-top { display: flex; justify-content: space-between; gap: 12px; align-items: flex-start; flex-wrap: wrap; }
+    .eyebrow { font-size: 13px; letter-spacing: .08em; text-transform: uppercase; opacity: .9; font-weight: 700; }
+    h1 { margin: 6px 0 10px; font-size: clamp(26px, 5vw, 42px); line-height: 1.05; }
+    .hero p { margin: 0; font-size: 15px; max-width: 720px; line-height: 1.6; color: #eef7ff; }
+    .badge-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px; }
+    .badge { background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.24); color: white; padding: 9px 12px; border-radius: 999px; font-size: 14px; font-weight: 700; }
+    .actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 20px; }
+    button { border: 0; cursor: pointer; }
+    .btn { padding: 13px 16px; border-radius: 14px; font-weight: 700; font-size: 15px; }
+    .btn-primary { background: white; color: var(--brand); }
+    .btn-secondary { background: rgba(255,255,255,.16); color: white; border: 1px solid rgba(255,255,255,.24); }
+    .progress-shell { margin-top: 18px; }
+    .progress-label { display: flex; justify-content: space-between; gap: 12px; font-size: 14px; font-weight: 700; margin-bottom: 8px; }
+    .progress-bar { height: 12px; background: rgba(255,255,255,.18); border-radius: 999px; overflow: hidden; }
+    .progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #c9ebff, white); border-radius: 999px; transition: width .25s ease; }
+    .panel { background: rgba(255,255,255,.78); backdrop-filter: blur(6px); border: 1px solid rgba(0,0,0,.06); border-radius: 28px; box-shadow: var(--shadow); margin-top: 18px; overflow: hidden; }
+    .panel-head { padding: 16px 18px; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; align-items: center; border-bottom: 1px solid #ebe5d9; }
+    .panel-title { font-size: 20px; font-weight: 800; }
+    .tiny { color: var(--muted); font-size: 14px; }
+    .card-wrap { padding: 18px; }
+    .flashcard { background: var(--paper); border: 1px solid var(--border); border-radius: 28px; padding: 20px; min-height: 540px; display: flex; flex-direction: column; gap: 18px; }
+    .card-top { display: flex; justify-content: space-between; gap: 12px; align-items: center; }
+    .chip { background: var(--accent); color: var(--brand); font-weight: 800; font-size: 13px; border-radius: 999px; padding: 7px 11px; }
+    .illus { min-height: 170px; border-radius: 24px; background: linear-gradient(180deg, #fbfdff, #edf6ff); border: 1px solid #d9e7f7; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+    .illus::after { content:""; position:absolute; inset:auto -30px -30px auto; width:150px; height:150px; background: radial-gradient(circle, rgba(78,166,255,.18), transparent 60%); }
+    .emoji { font-size: 96px; line-height: 1; }
+    .word { font-size: clamp(34px, 7vw, 56px); font-weight: 900; line-height: 1; margin: 0; text-align: center; color: #111827; }
+    .arabic { font-size: clamp(26px, 5.6vw, 44px); font-weight: 800; line-height: 1.3; margin: 0; text-align: center; direction: rtl; }
+    .speak-row { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+    .audio-btn { background: #eff6ff; color: #0f2f53; border: 1px solid #cfe1f6; padding: 10px 14px; border-radius: 14px; font-weight: 800; font-size: 14px; }
+    .colloc-box { background: #f7f7fb; border: 1px solid #e0e4ef; border-radius: 20px; padding: 16px; display: grid; gap: 8px; }
+    .label { font-size: 12px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+    .colloc-en { font-size: clamp(22px, 4.8vw, 34px); font-weight: 800; text-align: center; margin: 0; }
+    .colloc-ar { font-size: clamp(22px, 4.8vw, 34px); font-weight: 800; text-align: center; direction: rtl; margin: 0; }
+    .nav-row { display: flex; gap: 12px; justify-content: space-between; flex-wrap: wrap; margin-top: 12px; }
+    .nav-btn { flex: 1 1 180px; padding: 14px 16px; border-radius: 16px; background: #102a43; color: white; font-weight: 800; font-size: 15px; }
+    .nav-btn.alt { background: #e9eef5; color: #102a43; }
+    .hint { text-align: center; color: var(--muted); font-size: 13px; margin-top: 8px; }
+    .search-wrap { padding: 18px; display: grid; gap: 16px; }
+    .search-box { display: flex; gap: 10px; align-items: center; background: var(--paper); border: 1px solid var(--border); border-radius: 18px; padding: 12px 14px; }
+    .search-box input { width: 100%; border: 0; outline: none; font-size: 16px; background: transparent; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+    .mini { background: var(--paper); border: 1px solid var(--border); border-radius: 22px; padding: 14px; display: grid; gap: 10px; box-shadow: 0 10px 25px rgba(0,0,0,.04); }
+    .mini-top { display:flex; justify-content: space-between; gap:10px; align-items:center; }
+    .mini-illus { width: 62px; height: 62px; border-radius: 18px; background: linear-gradient(180deg, #fbfdff, #edf6ff); border: 1px solid #d9e7f7; display:flex; align-items:center; justify-content:center; font-size: 34px; cursor:pointer; }
+    .mini-word { font-size: 24px; font-weight: 900; margin: 0; }
+    .mini-ar { font-size: 24px; font-weight: 800; margin: 0; direction: rtl; }
+    .mini-colloc, .mini-colloc-ar { margin: 0; font-size: 16px; line-height: 1.45; }
+    .mini-colloc-ar { direction: rtl; font-weight: 700; }
+    .mini-actions { display:flex; gap: 8px; flex-wrap: wrap; }
+    .mini-actions .audio-btn { padding: 9px 12px; font-size: 13px; }
+    .empty { padding: 26px; text-align: center; color: var(--muted); font-weight: 700; }
+    .footer-note { color: var(--muted); font-size: 13px; line-height: 1.6; padding: 0 2px; }
+    @media (max-width: 640px) {
+      .app { padding-left: 12px; padding-right: 12px; }
+      .hero, .panel { border-radius: 22px; }
+      .flashcard { padding: 16px; min-height: auto; }
+      .card-wrap, .search-wrap { padding: 14px; }
+      .illus { min-height: 145px; }
+      .emoji { font-size: 84px; }
+      .nav-row { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <section class="hero">
+      <div class="hero-top">
+        <div>
+          <div class="eyebrow">Vocab with Teacher Jeebali</div>
+          <h1>Yaqueen • A2 • Class 01 (Part 02)</h1>
+          <p>30 vocabulary words from the uploaded source, with Arabic meanings, natural collocations, audio buttons, swipe navigation, and a searchable all-words library.</p>
+        </div>
+        <div class="badge-row" style="margin-top:0">
+          <div class="badge">Teacher | Muhammed Jeebali</div>
+          <div class="badge">Accent | American</div>
+        </div>
+      </div>
+      <div class="badge-row">
+        <div class="badge">Student: Yaqueen</div>
+        <div class="badge">Level: A2</div>
+        <div class="badge">Class: 01 (Part 02)</div>
+        <div class="badge">Words: 30</div>
+      </div>
+      <div class="actions">
+        <button class="btn btn-primary" onclick="scrollToFlashcard()">Start Study</button>
+        <button class="btn btn-secondary" onclick="scrollToLibrary()">Open All Words</button>
+      </div>
+      <div class="progress-shell">
+        <div class="progress-label"><span>Progress</span><span id="progressText">1 / 30</span></div>
+        <div class="progress-bar"><div id="progressFill" class="progress-fill"></div></div>
+      </div>
+    </section>
+
+    <section id="flashcardPanel" class="panel">
+      <div class="panel-head">
+        <div>
+          <div class="panel-title">Flashcard Study</div>
+          <div class="tiny">Swipe left/right on phones or use the buttons below.</div>
+        </div>
+        <div class="chip" id="cardChip">Word 1 of 30</div>
+      </div>
+      <div class="card-wrap">
+        <article id="flashcard" class="flashcard">
+          <div class="card-top">
+            <div class="chip" id="wordType">Vocabulary</div>
+            <div class="tiny" id="sourceRef">Source: Yaqueen • A2 • Class 01 (Part 02)</div>
+          </div>
+          <div class="illus"><div id="emoji" class="emoji">👔</div></div>
+          <h2 id="word" class="word">employee</h2>
+          <p id="arabic" class="arabic">موظف</p>
+          <div class="speak-row">
+            <button class="audio-btn" id="wordAudioBtn" onclick="playWordAudio()">🔊 Word Pronunciation</button>
+          </div>
+          <div class="colloc-box">
+            <div class="label">Real-life Collocation</div>
+            <p id="collocEn" class="colloc-en">full-time employee</p>
+            <p id="collocAr" class="colloc-ar">موظف بدوام كامل</p>
+            <div class="speak-row" style="margin-top:6px;">
+              <button class="audio-btn" id="phraseAudioBtn" onclick="playPhraseAudio()">🔊 Collocation Pronunciation</button>
+            </div>
+          </div>
+        </article>
+        <div class="nav-row">
+          <button class="nav-btn alt" onclick="prevWord()">← Previous</button>
+          <button class="nav-btn" id="nextBtn" onclick="nextWord()">Next Word →</button>
+        </div>
+        <div class="hint">Tip: On the last word, the Next button becomes <strong>Start Again</strong>.</div>
+      </div>
+    </section>
+
+    <section id="libraryPanel" class="panel">
+      <div class="panel-head">
+        <div>
+          <div class="panel-title">All Words Library</div>
+          <div class="tiny">Search, review, and jump directly to any flashcard.</div>
+        </div>
+        <div class="chip">30 Items</div>
+      </div>
+      <div class="search-wrap">
+        <label class="search-box" aria-label="Search vocabulary">
+          <span>🔎</span>
+          <input id="searchInput" type="text" placeholder="Search by English word, Arabic meaning, or collocation..." oninput="renderLibrary()" />
+        </label>
+        <div id="libraryGrid" class="grid"></div>
+        <div class="footer-note">Audio note: this app is ready for premium MP3 files in <code>audio/words</code> and <code>audio/phrases</code>. If those files are not available, the app uses the best American-English device voice available as a fallback.</div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const vocab = [{"word": "employee", "arabic": "مُوَظَّف", "collocation": "full-time employee", "collocation_ar": "موظف بدوام كامل", "emoji": "👔", "id": 1}, {"word": "employer", "arabic": "صاحب العمل", "collocation": "good employer", "collocation_ar": "صاحب عمل جيد", "emoji": "🧑‍💼", "id": 2}, {"word": "engineer", "arabic": "مُهَنْدِس", "collocation": "civil engineer", "collocation_ar": "مهندس مدني", "emoji": "👷", "id": 3}, {"word": "everyday", "arabic": "كُلَّ يَوْم", "collocation": "everyday life", "collocation_ar": "الحياة اليومية", "emoji": "🗓️", "id": 4}, {"word": "experience", "arabic": "خِبْرَة", "collocation": "work experience", "collocation_ar": "خبرة عمل", "emoji": "📈", "id": 5}, {"word": "expert", "arabic": "خَبِير", "collocation": "computer expert", "collocation_ar": "خبير حاسوب", "emoji": "🏅", "id": 6}, {"word": "factory", "arabic": "مَصْنَع", "collocation": "car factory", "collocation_ar": "مصنع سيارات", "emoji": "🏭", "id": 7}, {"word": "general", "arabic": "عَامّ", "collocation": "general manager", "collocation_ar": "المدير العام", "emoji": "🌐", "id": 8}, {"word": "goal", "arabic": "هَدَف", "collocation": "achieve a goal", "collocation_ar": "يُحَقِّقُ هدفًا", "emoji": "🎯", "id": 9}, {"word": "industry", "arabic": "صِنَاعَة", "collocation": "car industry", "collocation_ar": "صناعة السيارات", "emoji": "🏭", "id": 10}, {"word": "instruction", "arabic": "تَعْلِيمَات", "collocation": "follow instructions", "collocation_ar": "يتبع التعليمات", "emoji": "📋", "id": 11}, {"word": "instructor", "arabic": "مُدَرِّب", "collocation": "English instructor", "collocation_ar": "معلّم لغة إنجليزية", "emoji": "👨‍🏫", "id": 12}, {"word": "instrument", "arabic": "آلَة", "collocation": "musical instrument", "collocation_ar": "آلة موسيقية", "emoji": "🎸", "id": 13}, {"word": "invent", "arabic": "يَخْتَرِع", "collocation": "invent a machine", "collocation_ar": "يخترع آلة", "emoji": "💡", "id": 14}, {"word": "invention", "arabic": "اخْتِرَاع", "collocation": "great invention", "collocation_ar": "اختراع عظيم", "emoji": "🤖", "id": 15}, {"word": "laptop", "arabic": "حَاسُوب مَحْمُول", "collocation": "new laptop", "collocation_ar": "لابتوب جديد", "emoji": "💻", "id": 16}, {"word": "manage", "arabic": "يُدِير", "collocation": "manage a team", "collocation_ar": "يدير فريقًا", "emoji": "🗂️", "id": 17}, {"word": "manager", "arabic": "مُدِير", "collocation": "office manager", "collocation_ar": "مدير مكتب", "emoji": "👨‍💼", "id": 18}, {"word": "manner", "arabic": "أُسْلُوب / طَرِيقَةُ التَّصَرُّف", "collocation": "polite manner", "collocation_ar": "أسلوب مؤدب", "emoji": "🤝", "id": 19}, {"word": "method", "arabic": "طَرِيقَة / نَهْج", "collocation": "new method", "collocation_ar": "طريقة جديدة", "emoji": "🧭", "id": 20}, {"word": "network", "arabic": "شَبَكَة", "collocation": "computer network", "collocation_ar": "شبكة حاسوب", "emoji": "🖧", "id": 21}, {"word": "organization", "arabic": "مُنَظَّمَة / مُؤَسَّسَة", "collocation": "international organization", "collocation_ar": "منظمة دولية", "emoji": "🏢", "id": 22}, {"word": "organize", "arabic": "يُنَظِّم / يُرَتِّب", "collocation": "organize your desk", "collocation_ar": "ينظّم مكتبك", "emoji": "🗄️", "id": 23}, {"word": "pattern", "arabic": "نَمَط / شَكْل مُتَكَرِّر", "collocation": "regular pattern", "collocation_ar": "نمط منتظم", "emoji": "🔷", "id": 24}, {"word": "perform", "arabic": "يُؤَدِّي / يُنْجِز", "collocation": "perform a task", "collocation_ar": "يؤدي مهمة", "emoji": "✅", "id": 25}, {"word": "profile", "arabic": "مِلَفّ شَخْصِي / نُبْذَة", "collocation": "user profile", "collocation_ar": "ملف المستخدم الشخصي", "emoji": "🪪", "id": 26}, {"word": "progress", "arabic": "تَقَدُّم / تَطَوُّر", "collocation": "make progress", "collocation_ar": "يحرز تقدمًا", "emoji": "📈", "id": 27}, {"word": "project", "arabic": "مَشْرُوع", "collocation": "new project", "collocation_ar": "مشروع جديد", "emoji": "📐", "id": 28}, {"word": "quality", "arabic": "جَوْدَة / كَفَاءَة", "collocation": "high quality", "collocation_ar": "جودة عالية", "emoji": "⭐", "id": 29}, {"word": "schedule", "arabic": "جَدْوَل / يُجَدْوِل", "collocation": "busy schedule", "collocation_ar": "جدول مواعيد مزدحم", "emoji": "📅", "id": 30}];
+    let currentIndex = 0;
+    let touchStartX = null;
+
+    function slugify(text) {
+      return text.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+    }
+
+    function updateCard() {
+      const item = vocab[currentIndex];
+      document.getElementById('emoji').textContent = item.emoji;
+      document.getElementById('word').textContent = item.word;
+      document.getElementById('arabic').textContent = item.arabic;
+      document.getElementById('collocEn').textContent = item.collocation;
+      document.getElementById('collocAr').textContent = item.collocation_ar;
+      document.getElementById('cardChip').textContent = `Word ${currentIndex + 1} of ${vocab.length}`;
+      document.getElementById('progressText').textContent = `${currentIndex + 1} / ${vocab.length}`;
+      document.getElementById('progressFill').style.width = `${((currentIndex + 1) / vocab.length) * 100}%`;
+      const nextBtn = document.getElementById('nextBtn');
+      nextBtn.textContent = currentIndex === vocab.length - 1 ? 'Start Again ↻' : 'Next Word →';
+      renderLibrary();
+    }
+
+    function nextWord() {
+      if (currentIndex === vocab.length - 1) currentIndex = 0;
+      else currentIndex += 1;
+      updateCard();
+      scrollToFlashcard();
+    }
+
+    function prevWord() {
+      currentIndex = currentIndex === 0 ? vocab.length - 1 : currentIndex - 1;
+      updateCard();
+      scrollToFlashcard();
+    }
+
+    function openWord(index) {
+      currentIndex = index;
+      updateCard();
+      scrollToFlashcard();
+    }
+
+    function renderLibrary() {
+      const query = document.getElementById('searchInput').value.trim().toLowerCase();
+      const grid = document.getElementById('libraryGrid');
+      const filtered = vocab.filter(item => [item.word, item.arabic, item.collocation, item.collocation_ar].join(' ').toLowerCase().includes(query));
+      if (!filtered.length) {
+        grid.innerHTML = '<div class="empty">No matching vocabulary found.</div>';
+        return;
+      }
+      grid.innerHTML = filtered.map(item => {
+        const actualIndex = vocab.findIndex(v => v.id === item.id);
+        return `
+          <article class="mini">
+            <div class="mini-top">
+              <div>
+                <p class="mini-word">${item.word}</p>
+                <p class="mini-ar">${item.arabic}</p>
+              </div>
+              <button class="mini-illus" onclick="openWord(${actualIndex})" title="Open flashcard">${item.emoji}</button>
+            </div>
+            <div>
+              <p class="mini-colloc"><strong>${item.collocation}</strong></p>
+              <p class="mini-colloc-ar">${item.collocation_ar}</p>
+            </div>
+            <div class="mini-actions">
+              <button class="audio-btn" onclick="playItemWord(${actualIndex})">🔊 Word</button>
+              <button class="audio-btn" onclick="playItemPhrase(${actualIndex})">🔊 Collocation</button>
+            </div>
+          </article>
+        `;
+      }).join('');
+    }
+
+    function getPreferredVoice() {
+      const voices = speechSynthesis.getVoices();
+      return voices.find(v => /en-US/i.test(v.lang) && /Google|Samantha|Alex|Microsoft|Natural/i.test(v.name))
+          || voices.find(v => /en-US/i.test(v.lang))
+          || voices.find(v => /^en/i.test(v.lang))
+          || null;
+    }
+
+    function speakText(text) {
+      if (!('speechSynthesis' in window)) return;
+      speechSynthesis.cancel();
+      const utter = new SpeechSynthesisUtterance(text);
+      const voice = getPreferredVoice();
+      if (voice) utter.voice = voice;
+      utter.lang = 'en-US';
+      utter.rate = 0.93;
+      utter.pitch = 1;
+      speechSynthesis.speak(utter);
+    }
+
+    async function tryPlayMp3(primaryPath, fallbackText) {
+      try {
+        const res = await fetch(primaryPath, { method: 'HEAD' });
+        if (res.ok) {
+          const audio = new Audio(primaryPath);
+          await audio.play();
+          return;
+        }
+      } catch (e) {}
+      speakText(fallbackText);
+    }
+
+    function playWordAudio() {
+      const item = vocab[currentIndex];
+      tryPlayMp3(`audio/words/${slugify(item.word)}.mp3`, item.word);
+    }
+    function playPhraseAudio() {
+      const item = vocab[currentIndex];
+      tryPlayMp3(`audio/phrases/${slugify(item.collocation)}.mp3`, item.collocation);
+    }
+    function playItemWord(index) {
+      const item = vocab[index];
+      tryPlayMp3(`audio/words/${slugify(item.word)}.mp3`, item.word);
+    }
+    function playItemPhrase(index) {
+      const item = vocab[index];
+      tryPlayMp3(`audio/phrases/${slugify(item.collocation)}.mp3`, item.collocation);
+    }
+
+    function scrollToFlashcard() {
+      document.getElementById('flashcardPanel').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function scrollToLibrary() {
+      document.getElementById('libraryPanel').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    const flashcardEl = document.getElementById('flashcard');
+    flashcardEl.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].clientX; }, {passive: true});
+    flashcardEl.addEventListener('touchend', e => {
+      if (touchStartX === null) return;
+      const delta = e.changedTouches[0].clientX - touchStartX;
+      if (delta < -45) nextWord();
+      else if (delta > 45) prevWord();
+      touchStartX = null;
+    }, {passive: true});
+
+    updateCard();
+  </script>
+</body>
+</html>
