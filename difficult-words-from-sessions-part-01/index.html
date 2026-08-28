@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Difficult Words From Sessions | PART 01</title>
+<style>
+:root{
+  --red:#D9232E;--red-dark:#B71924;--blue:#1A69E2;--blue-dark:#0D54BA;
+  --ink:#172033;--muted:#6E788C;--paper:#ffffff;--bg:#F2F6FB;--line:#DDE5EF;
+  --shadow:0 16px 40px rgba(23,32,51,.12);--soft-shadow:0 10px 24px rgba(23,32,51,.10);
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;color:var(--ink);background:var(--bg)}
+body{min-height:100vh;background:radial-gradient(circle at 10% 0%,rgba(26,105,226,.07),transparent 28%),radial-gradient(circle at 90% 100%,rgba(217,35,46,.06),transparent 24%),var(--bg)}
+button{font:inherit}
+.screen{display:none;min-height:100vh}
+.screen.active{display:flex}
+
+#homeScreen{align-items:center;justify-content:center;padding:28px 18px}
+.home-shell{width:min(760px,100%);background:rgba(255,255,255,.88);border:1px solid rgba(255,255,255,.82);backdrop-filter:blur(8px);border-radius:32px;box-shadow:var(--shadow);padding:clamp(26px,5vw,50px);text-align:center}
+.mini-label{font-weight:900;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-size:.78rem;margin-bottom:16px}
+.home-title{margin:0 0 12px;font-size:clamp(1.5rem,4vw,2.25rem);letter-spacing:-.03em}
+.home-note{margin:0 0 28px;color:var(--muted);font-weight:650;line-height:1.55}
+.class-title{width:100%;border:0;border-radius:22px;padding:25px 24px;background:var(--red);color:#fff;font-size:clamp(1.35rem,4vw,2.15rem);font-weight:950;box-shadow:0 10px 0 rgba(161,23,32,.14),0 16px 28px rgba(217,35,46,.2);cursor:pointer;transition:transform .16s ease,background .16s ease}
+.class-title:hover{background:var(--red-dark);transform:translateY(-2px)}
+.home-meta{margin-top:18px;color:var(--muted);font-size:.9rem;font-weight:760}
+
+#vocabScreen{flex-direction:column;padding:18px clamp(12px,3vw,34px) 28px}
+.topbar{width:min(1420px,100%);margin:0 auto 16px;display:flex;align-items:center;justify-content:space-between;gap:14px}
+.home-btn,.nav-btn{border:0;border-radius:14px;padding:12px 16px;background:#fff;color:var(--ink);font-weight:850;cursor:pointer;box-shadow:var(--soft-shadow)}
+.page-title{text-align:center;flex:1;min-width:0}
+.page-title h1{margin:0;font-size:clamp(1.22rem,3vw,1.78rem);letter-spacing:-.02em}
+.page-title p{margin:4px 0 0;color:var(--muted);font-size:.95rem;font-weight:700}
+.progress-pill{background:#fff;border:1px solid var(--line);border-radius:999px;padding:10px 14px;font-size:.86rem;font-weight:800;color:var(--muted);white-space:nowrap}
+
+.cards{width:min(1420px,100%);margin:0 auto;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;flex:1;align-items:stretch}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:24px;padding:16px;box-shadow:var(--soft-shadow);display:flex;flex-direction:column;min-width:0}
+.word-line{display:flex;align-items:center;justify-content:center;gap:8px;min-height:46px}
+.word{margin:0;text-align:center;font-size:clamp(1.35rem,2.6vw,2rem);font-weight:950;letter-spacing:-.03em;line-height:1.05;overflow-wrap:anywhere}
+.audio-mini{width:36px;height:36px;border-radius:50%;border:0;background:#EDF4FF;color:var(--blue);display:flex;align-items:center;justify-content:center;padding:0;cursor:pointer;flex:0 0 36px}
+.audio-mini:hover{background:#E2EEFF}
+.headset-icon{width:20px;height:20px;display:block;flex:0 0 auto}
+.arabic-word{text-align:center;direction:rtl;font-size:1rem;font-weight:780;color:var(--muted);margin:4px 0 12px;line-height:1.45;min-height:24px}
+.picture{width:100%;aspect-ratio:4/3;border-radius:18px;overflow:hidden;background:#EAF3FB;border:1px solid #E0E8F3}
+.picture svg{width:100%;height:100%;display:block}
+.card-footer{margin-top:auto;padding-top:15px;display:flex;justify-content:center}
+.ex-btn{width:54px;height:54px;border-radius:50%;border:0;background:var(--blue);color:#fff;font-weight:950;font-size:.95rem;cursor:pointer;box-shadow:0 10px 18px rgba(26,105,226,.22);transition:transform .15s ease,background .15s ease}
+.ex-btn:hover{transform:scale(1.06);background:var(--blue-dark)}
+
+.bottom-nav{width:min(1420px,100%);margin:18px auto 0;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:16px}
+.nav-btn.primary{background:var(--blue);color:#fff}
+.nav-btn:disabled{opacity:.45;cursor:not-allowed;box-shadow:none}
+.page-dots{display:flex;justify-content:center;align-items:center;gap:7px;flex-wrap:wrap;min-width:0}
+.dot{width:10px;height:10px;border-radius:50%;background:#D5DCE7;border:0;padding:0;cursor:pointer}
+.dot.active{background:var(--blue);transform:scale(1.2)}
+
+.modal-overlay{position:fixed;inset:0;z-index:99;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(17,24,39,.28);backdrop-filter:blur(9px);-webkit-backdrop-filter:blur(9px)}
+.modal-overlay.open{display:flex}
+.example-box{width:min(650px,92vw);background:#fff;border-radius:28px;padding:clamp(28px,6vw,46px);box-shadow:0 30px 80px rgba(0,0,0,.24);text-align:center;animation:pop .16s ease-out}
+@keyframes pop{from{opacity:0;transform:scale(.96) translateY(8px)}to{opacity:1;transform:scale(1) translateY(0)}}
+.example-kicker{margin:0 0 12px;color:var(--muted);font-size:.8rem;font-weight:900;letter-spacing:.12em;text-transform:uppercase}
+.example-sentence{margin:0;font-size:clamp(1.35rem,4vw,2rem);line-height:1.45;font-weight:850}
+.headset-btn{margin:24px auto 0;width:68px;height:68px;border:0;border-radius:50%;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;padding:0;cursor:pointer;box-shadow:0 10px 20px rgba(26,105,226,.23)}
+.headset-btn .headset-icon{width:31px;height:31px}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);background:#172033;color:#fff;padding:12px 18px;border-radius:999px;font-weight:750;opacity:0;pointer-events:none;transition:.22s ease;z-index:150;max-width:90vw;text-align:center}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+@media(max-width:1100px){.cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:650px){
+  #vocabScreen{padding:12px 10px 20px}.topbar{align-items:flex-start}.progress-pill{display:none}
+  .page-title h1{font-size:1.08rem}.page-title p{font-size:.8rem}
+  .cards{grid-template-columns:1fr 1fr;gap:10px}.card{padding:11px;border-radius:18px}.picture{border-radius:14px}
+  .word-line{gap:5px;min-height:40px}.word{font-size:1.16rem}.arabic-word{font-size:.78rem;margin-bottom:8px;min-height:20px}
+  .audio-mini{width:31px;height:31px;flex-basis:31px}.audio-mini .headset-icon{width:17px;height:17px}.ex-btn{width:44px;height:44px;font-size:.84rem}
+  .home-btn,.nav-btn{padding:10px 12px}.bottom-nav{margin-top:12px;grid-template-columns:1fr 1fr}.page-dots{grid-column:1/-1;grid-row:2}
+}
+@media(max-width:390px){.word{font-size:1.03rem}.audio-mini{width:29px;height:29px;flex-basis:29px}.card{padding:9px}}
+</style>
+</head>
+<body>
+<section id="homeScreen" class="screen active">
+  <main class="home-shell">
+    <div class="mini-label">Vocabulary Review App</div>
+    <h1 class="home-title">Difficult Words From Sessions | PART 01</h1>
+    <p class="home-note">Review the difficult words collected during the sessions.</p>
+    <button class="class-title" id="startBtn">Difficult Words From Sessions</button>
+    <div class="home-meta">111 items • 28 pages • 4 items per page</div>
+  </main>
+</section>
+
+<section id="vocabScreen" class="screen">
+  <header class="topbar">
+    <button class="home-btn" id="homeBtn" aria-label="Back to home">← Home</button>
+    <div class="page-title">
+      <h1>Difficult Words From Sessions | PART 01</h1>
+      <p>Session Vocabulary • Simple A1 Examples</p>
+    </div>
+    <div class="progress-pill" id="progressPill">Page 1 of 28</div>
+  </header>
+  <main class="cards" id="cards"></main>
+  <nav class="bottom-nav" aria-label="Vocabulary pages">
+    <button class="nav-btn" id="prevBtn">← Previous</button>
+    <div class="page-dots" id="pageDots"></div>
+    <button class="nav-btn primary" id="nextBtn">Next →</button>
+  </nav>
+</section>
+
+<div class="modal-overlay" id="exampleOverlay" aria-hidden="true">
+  <div class="example-box" id="exampleBox" role="dialog" aria-modal="true" aria-labelledby="exampleSentence">
+    <p class="example-kicker">Example</p>
+    <p class="example-sentence" id="exampleSentence"></p>
+    <button class="headset-btn" id="exampleAudio" aria-label="Play example audio">
+      <svg class="headset-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 13v5a2 2 0 0 0 2 2h2v-8H6a2 2 0 0 0-2 2Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M20 13v5a2 2 0 0 1-2 2h-2v-8h2a2 2 0 0 1 2 2Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M4 13v-1a8 8 0 0 1 16 0v1" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const WORDS=[{"word":"part-time","ar":"دوام جزئي","ex":"I work part-time at a shop.","icon":"work"},{"word":"full-time","ar":"دوام كامل","ex":"My sister works full-time.","icon":"time"},{"word":"reach","ar":"يصل إلى","ex":"We reach school at eight.","icon":"goal"},{"word":"target","ar":"هدف","ex":"Our target is ten sales.","icon":"goal"},{"word":"shop","ar":"متجر / يتسوق","ex":"I shop near my house.","icon":"shop"},{"word":"sell","ar":"يبيع","ex":"They sell fruit here.","icon":"money"},{"word":"experiment","ar":"تجربة","ex":"The scientist does an experiment.","icon":"science"},{"word":"programmer","ar":"مبرمج","ex":"The programmer writes code.","icon":"computer"},{"word":"short","ar":"قصير","ex":"This road is short.","icon":"measure"},{"word":"show","ar":"يعرض / يُري","ex":"I show my ticket at the door.","icon":"eye"},{"word":"sales","ar":"المبيعات","ex":"Sales are good this week.","icon":"chart"},{"word":"change","ar":"يغيّر / تغيير","ex":"I change my clothes at home.","icon":"change"},{"word":"communication","ar":"تواصل","ex":"Good communication helps the team.","icon":"chat"},{"word":"aggressive","ar":"عدواني","ex":"The dog looks aggressive.","icon":"warning"},{"word":"behaviour","ar":"سلوك","ex":"His behaviour is polite.","icon":"person"},{"word":"lost","ar":"ضائع","ex":"My key is lost.","icon":"key"},{"word":"practice","ar":"يتدرّب / تدريب","ex":"I practice English every day.","icon":"learning"},{"word":"progress","ar":"تقدّم","ex":"I make progress in English.","icon":"chart"},{"word":"storm","ar":"عاصفة","ex":"The storm is very strong.","icon":"storm"},{"word":"skill","ar":"مهارة","ex":"Cooking is a useful skill.","icon":"learning"},{"word":"create","ar":"ينشئ / يبتكر","ex":"She creates a simple design.","icon":"art"},{"word":"parent","ar":"والد / والدة","ex":"My parent comes to school.","icon":"family"},{"word":"education","ar":"تعليم","ex":"Education is important for children.","icon":"school"},{"word":"useful","ar":"مفيد","ex":"This book is useful for me.","icon":"check"},{"word":"visitor","ar":"زائر","ex":"A visitor waits at the door.","icon":"person"},{"word":"guide","ar":"دليل / مرشد","ex":"The guide shows us the museum.","icon":"map"},{"word":"plane","ar":"طائرة","ex":"The plane flies over the city.","icon":"plane"},{"word":"fly","ar":"يطير","ex":"Birds fly in the sky.","icon":"plane"},{"word":"should","ar":"ينبغي / يجب","ex":"The word 'should' gives advice.","icon":"advice"},{"word":"lower","ar":"يخفض","ex":"The shop lowers the price.","icon":"down"},{"word":"loan","ar":"قرض","ex":"A bank gives a loan.","icon":"bank"},{"word":"signed","ar":"موقّع","ex":"The signed paper is on my desk.","icon":"document"},{"word":"keep","ar":"يحتفظ بـ / يبقي","ex":"I keep my keys in my bag.","icon":"key"},{"word":"product","ar":"منتج","ex":"This shop sells a new product.","icon":"box"},{"word":"through","ar":"عبر / من خلال","ex":"I walk through the park.","icon":"path"},{"word":"updated","ar":"مُحدَّث","ex":"The updated file is on my computer.","icon":"refresh"},{"word":"not","ar":"ليس / لا","ex":"I am not busy today.","icon":"no"},{"word":"near","ar":"قريب من","ex":"My school is near my house.","icon":"location"},{"word":"store","ar":"متجر","ex":"The store opens at nine.","icon":"shop"},{"word":"adult","ar":"شخص بالغ","ex":"I am an adult.","icon":"person"},{"word":"shape","ar":"شكل","ex":"A circle is a round shape.","icon":"shape"},{"word":"road","ar":"طريق","ex":"This road goes to the city.","icon":"road"},{"word":"bridge","ar":"جسر","ex":"The bridge is over the river.","icon":"bridge"},{"word":"carefully","ar":"بعناية","ex":"I drive carefully at night.","icon":"careful"},{"word":"customer","ar":"عميل / زبون","ex":"The customer buys a phone.","icon":"customer"},{"word":"same","ar":"نفس / مماثل","ex":"We have the same phone.","icon":"same"},{"word":"flood","ar":"فيضان","ex":"The flood covers the road.","icon":"water"},{"word":"busy","ar":"مشغول","ex":"I am busy at work.","icon":"work"},{"word":"late","ar":"متأخر","ex":"He is late for class.","icon":"time"},{"word":"tired","ar":"متعب","ex":"I am tired after work.","icon":"tired"},{"word":"trip","ar":"رحلة","ex":"Our trip starts in Cairo.","icon":"travel"},{"word":"journey","ar":"رحلة / سفر","ex":"My journey takes two hours.","icon":"travel"},{"word":"classmate","ar":"زميل في الفصل","ex":"My classmate sits next to me.","icon":"people"},{"word":"tourist","ar":"سائح","ex":"The tourist takes many photos.","icon":"camera"},{"word":"our","ar":"لنا / خاصتنا","ex":"This is our classroom.","icon":"people"},{"word":"main","ar":"رئيسي","ex":"English is my main subject.","icon":"star"},{"word":"project","ar":"مشروع","ex":"Our project is about food.","icon":"project"},{"word":"manager","ar":"مدير","ex":"The manager works in an office.","icon":"office"},{"word":"so","ar":"لذلك","ex":"I am tired, so I go home.","icon":"arrow"},{"word":"then","ar":"ثم","ex":"I eat breakfast, then I go to work.","icon":"next"},{"word":"supplier","ar":"مورّد","ex":"The supplier brings the products.","icon":"truck"},{"word":"company","ar":"شركة","ex":"My company sells computers.","icon":"office"},{"word":"worker","ar":"عامل","ex":"The worker starts at eight.","icon":"worker"},{"word":"museum","ar":"متحف","ex":"The museum opens every day.","icon":"museum"},{"word":"scientist","ar":"عالِم","ex":"The scientist works in a lab.","icon":"science"},{"word":"enough","ar":"كافٍ","ex":"We have enough food.","icon":"check"},{"word":"right","ar":"يمين","ex":"The bank is on the right.","icon":"right"},{"word":"left","ar":"يسار","ex":"The shop is on the left.","icon":"left"},{"word":"lift","ar":"يرفع / مصعد","ex":"I lift the small box.","icon":"lift"},{"word":"heavy","ar":"ثقيل","ex":"This bag is heavy.","icon":"heavy"},{"word":"check","ar":"يفحص / يتحقق","ex":"I check my email every morning.","icon":"check"},{"word":"replay","ar":"يعيد التشغيل","ex":"I replay the video.","icon":"replay"},{"word":"report","ar":"تقرير","ex":"I read the report at work.","icon":"document"},{"word":"cable","ar":"كابل / سلك","ex":"The cable connects the printer.","icon":"cable"},{"word":"printer","ar":"طابعة","ex":"The printer is next to my desk.","icon":"printer"},{"word":"use","ar":"يستخدم","ex":"I use my phone every day.","icon":"phone"},{"word":"version","ar":"إصدار","ex":"This version is easy to use.","icon":"version"},{"word":"new","ar":"جديد","ex":"I have a new bag.","icon":"new"},{"word":"save","ar":"يحفظ","ex":"I save my work on the computer.","icon":"save"},{"word":"file","ar":"ملف","ex":"The file is on my computer.","icon":"folder"},{"word":"dusty","ar":"مليء بالغبار","ex":"The table is dusty.","icon":"dust"},{"word":"organise / organize","ar":"ينظّم / يرتّب","ex":"I organize my desk every Friday.","icon":"organize"},{"word":"schedule","ar":"جدول / مواعيد","ex":"I check my schedule every morning.","icon":"calendar"},{"word":"busy schedule","ar":"جدول مزدحم","ex":"I have a busy schedule this week.","icon":"calendar"},{"word":"meet up","ar":"يلتقي","ex":"I meet up with my friends on Friday.","icon":"people"},{"word":"great invention","ar":"اختراع رائع","ex":"The phone is a great invention.","icon":"idea"},{"word":"how to","ar":"كيفية / كيف","ex":"This book shows how to cook.","icon":"book"},{"word":"part of","ar":"جزء من","ex":"I am part of this team.","icon":"puzzle"},{"word":"visual designs","ar":"تصميمات مرئية","ex":"She creates visual designs at work.","icon":"art"},{"word":"useful guide","ar":"دليل مفيد","ex":"This is a useful guide for visitors.","icon":"map"},{"word":"interest rate","ar":"سعر الفائدة","ex":"The bank has a low interest rate.","icon":"percent"},{"word":"marketing department","ar":"قسم التسويق","ex":"She works in the marketing department.","icon":"marketing"},{"word":"paper copy","ar":"نسخة ورقية","ex":"I keep a paper copy at home.","icon":"document"},{"word":"read a document","ar":"يقرأ مستندًا","ex":"I read a document at work.","icon":"document"},{"word":"important role","ar":"دور مهم","ex":"A teacher has an important role.","icon":"star"},{"word":"most people","ar":"معظم الناس","ex":"Most people use phones every day.","icon":"people"},{"word":"polite manner","ar":"أسلوب مهذب","ex":"He speaks in a polite manner.","icon":"polite"},{"word":"responsible for","ar":"مسؤول عن","ex":"I am responsible for this project.","icon":"responsible"},{"word":"whole company","ar":"الشركة كلها","ex":"The whole company meets on Monday.","icon":"office"},{"word":"reach our target","ar":"نصل إلى هدفنا","ex":"We work hard to reach our target.","icon":"goal"},{"word":"near here","ar":"قريب من هنا","ex":"The bank is near here.","icon":"location"},{"word":"our main goal","ar":"هدفنا الرئيسي","ex":"Our main goal is good service.","icon":"goal"},{"word":"on time","ar":"في الموعد","ex":"I arrive at work on time.","icon":"time"},{"word":"write a report","ar":"يكتب تقريرًا","ex":"I write a report every Monday.","icon":"document"},{"word":"make a deal","ar":"يعقد صفقة","ex":"The two companies make a deal.","icon":"handshake"},{"word":"the Grand Museum","ar":"المتحف الكبير","ex":"The Grand Museum has many visitors.","icon":"museum"},{"word":"old version","ar":"إصدار قديم","ex":"I use the old version at work.","icon":"version"},{"word":"film actors","ar":"ممثلون سينمائيون","ex":"Film actors work in movies.","icon":"film"},{"word":"perform a pilgrimage","ar":"يؤدي الحج","ex":"People perform a pilgrimage to Makkah.","icon":"pilgrimage"},{"word":"perform ablution","ar":"يتوضأ","ex":"I perform ablution before prayer.","icon":"water"},{"word":"check my schedule","ar":"أراجع جدولي","ex":"I check my schedule every morning.","icon":"calendar"}];
+const PAGE_SIZE=4;
+let currentPage=0;
+let currentSentence='';
+
+const headsetSVG=`<svg class="headset-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 13v5a2 2 0 0 0 2 2h2v-8H6a2 2 0 0 0-2 2Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M20 13v5a2 2 0 0 1-2 2h-2v-8h2a2 2 0 0 1 2 2Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M4 13v-1a8 8 0 0 1 16 0v1" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`;
+
+function iconArt(type){
+  const c='#26364d', a='#d8e0ea', b='#ffffff', r='#D9232E', g='#138a53', y='#f0b429', blue='#1A69E2';
+  const base=`<rect x="8" y="8" width="304" height="144" rx="24" fill="${b}" stroke="${a}" stroke-width="3"/>`;
+  const svgs={
+    work:`<rect x="88" y="54" width="144" height="70" rx="12" fill="#eef2f7" stroke="${c}" stroke-width="5"/><path d="M132 54v-16h56v16M88 82h144" fill="none" stroke="${c}" stroke-width="5"/><circle cx="160" cy="83" r="7" fill="${r}"/>`,
+    time:`<circle cx="160" cy="80" r="52" fill="#f8fafc" stroke="${c}" stroke-width="6"/><path d="M160 47v35l26 15" fill="none" stroke="${r}" stroke-width="7" stroke-linecap="round"/>`,
+    goal:`<circle cx="160" cy="80" r="52" fill="#fff" stroke="${r}" stroke-width="7"/><circle cx="160" cy="80" r="30" fill="none" stroke="${r}" stroke-width="7"/><circle cx="160" cy="80" r="9" fill="${r}"/><path d="M205 35l-43 43" stroke="${c}" stroke-width="7" stroke-linecap="round"/>`,
+    shop:`<path d="M92 65h136l-13 58H105z" fill="#f6f8fb" stroke="${c}" stroke-width="5"/><path d="M100 65l13-27h94l13 27" fill="#fff" stroke="${c}" stroke-width="5"/><path d="M105 65v17h110V65" fill="${r}" opacity=".18"/><rect x="143" y="92" width="34" height="31" rx="4" fill="#fff" stroke="${c}" stroke-width="4"/>`,
+    money:`<rect x="88" y="51" width="144" height="72" rx="12" fill="#eef8f2" stroke="${g}" stroke-width="5"/><circle cx="160" cy="87" r="22" fill="#fff" stroke="${g}" stroke-width="4"/><text x="160" y="96" text-anchor="middle" font-size="27" font-weight="900" fill="${g}">$</text>`,
+    science:`<path d="M139 35v36l-31 54h104l-31-54V35" fill="#eef6ff" stroke="${c}" stroke-width="5"/><path d="M122 98h76" stroke="${r}" stroke-width="5"/><circle cx="146" cy="108" r="7" fill="${r}"/><circle cx="174" cy="114" r="6" fill="${y}"/>`,
+    computer:`<rect x="88" y="41" width="144" height="82" rx="10" fill="#eef2f7" stroke="${c}" stroke-width="5"/><path d="M129 136h62M160 123v13" stroke="${c}" stroke-width="5"/><path d="M119 68l18 16-18 16M202 68l-18 16 18 16" fill="none" stroke="${r}" stroke-width="5"/>`,
+    measure:`<rect x="78" y="62" width="164" height="38" rx="8" fill="#fff9e8" stroke="${c}" stroke-width="5"/><path d="M100 62v18M124 62v12M148 62v18M172 62v12M196 62v18M220 62v12" stroke="${c}" stroke-width="3"/>`,
+    eye:`<path d="M72 82q88-76 176 0-88 76-176 0z" fill="#f8fafc" stroke="${c}" stroke-width="5"/><circle cx="160" cy="82" r="28" fill="#dce8ff" stroke="${c}" stroke-width="5"/><circle cx="160" cy="82" r="10" fill="${r}"/>`,
+    chart:`<path d="M92 123V43M92 123h142" stroke="${c}" stroke-width="5"/><path d="M108 104l35-29 30 15 46-45" fill="none" stroke="${g}" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>`,
+    change:`<path d="M105 58h93l-20-20M215 106h-93l20 20" fill="none" stroke="${r}" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>`,
+    chat:`<path d="M86 48h148v70H149l-29 20v-20H86z" fill="#f3f6fb" stroke="${c}" stroke-width="5"/><circle cx="130" cy="82" r="6" fill="${r}"/><circle cx="160" cy="82" r="6" fill="${r}"/><circle cx="190" cy="82" r="6" fill="${r}"/>`,
+    warning:`<path d="M160 32l71 102H89z" fill="#fff6db" stroke="${y}" stroke-width="6"/><path d="M160 62v38" stroke="${c}" stroke-width="7" stroke-linecap="round"/><circle cx="160" cy="119" r="5" fill="${c}"/>`,
+    person:`<circle cx="160" cy="58" r="25" fill="#eef2f7" stroke="${c}" stroke-width="5"/><path d="M112 130q7-46 48-46t48 46" fill="#f6f8fb" stroke="${c}" stroke-width="5"/>`,
+    key:`<circle cx="118" cy="82" r="27" fill="#fff9e8" stroke="${c}" stroke-width="5"/><path d="M143 82h90M201 82v18M219 82v13" stroke="${c}" stroke-width="6" stroke-linecap="round"/>`,
+    learning:`<path d="M87 45q43-13 73 8v76q-31-20-73-8zM233 45q-43-13-73 8v76q31-20 73-8z" fill="#f5f7fb" stroke="${c}" stroke-width="5"/><path d="M160 53v76" stroke="${r}" stroke-width="4"/>`,
+    storm:`<path d="M99 91q-15-36 25-45 18-28 47-8 34-8 43 24 27 6 18 35H105z" fill="#e9eef5" stroke="${c}" stroke-width="5"/><path d="M132 107l-12 25M166 107l-12 25M199 107l-12 25" stroke="${blue}" stroke-width="6" stroke-linecap="round"/>`,
+    art:`<path d="M94 111q-20-62 43-77 62-15 89 38 14 29-16 32h-24q-13 0-11 13 2 19-23 16-37-3-58-22z" fill="#fff7e6" stroke="${c}" stroke-width="5"/><circle cx="130" cy="69" r="8" fill="${r}"/><circle cx="160" cy="57" r="8" fill="${g}"/><circle cx="191" cy="71" r="8" fill="${y}"/>`,
+    family:`<circle cx="130" cy="59" r="20" fill="#eef2f7" stroke="${c}" stroke-width="4"/><circle cx="190" cy="59" r="20" fill="#eef2f7" stroke="${c}" stroke-width="4"/><path d="M95 128q5-42 35-42t35 42M155 128q5-42 35-42t35 42" fill="#f8fafc" stroke="${c}" stroke-width="4"/>`,
+    school:`<path d="M80 67l80-37 80 37-80 37z" fill="#f3f6fb" stroke="${c}" stroke-width="5"/><path d="M104 81v44h112V81M160 103v22" fill="none" stroke="${c}" stroke-width="5"/>`,
+    check:`<circle cx="160" cy="82" r="54" fill="#eef8f2" stroke="${g}" stroke-width="5"/><path d="M126 82l22 22 47-51" fill="none" stroke="${g}" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>`,
+    map:`<path d="M87 47l47-15 52 17 47-15v85l-47 15-52-17-47 15z" fill="#f8fafc" stroke="${c}" stroke-width="5"/><path d="M134 32v85M186 49v85" stroke="${c}" stroke-width="4"/><circle cx="171" cy="77" r="8" fill="${r}"/>`,
+    plane:`<path d="M77 85l70-17 28-38 17 3-10 33 63 19-4 12-66-5-30 29-15-3 14-31-64 10z" fill="#eaf1ff" stroke="${c}" stroke-width="4"/>`,
+    advice:`<circle cx="160" cy="67" r="38" fill="#fff8df" stroke="${y}" stroke-width="5"/><path d="M146 112h28M148 124h24M160 28v-12M113 43l-10-10M207 43l10-10" stroke="${c}" stroke-width="5" stroke-linecap="round"/>`,
+    down:`<path d="M160 34v78M126 82l34 34 34-34" fill="none" stroke="${r}" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>`,
+    bank:`<path d="M86 61l74-31 74 31zM102 69h116M111 69v52M143 69v52M177 69v52M209 69v52M94 127h132" fill="#f7f8fb" stroke="${c}" stroke-width="5"/>`,
+    document:`<path d="M112 31h72l28 28v76H112z" fill="#fff" stroke="${c}" stroke-width="5"/><path d="M184 31v29h28M132 79h60M132 98h60M132 117h45" stroke="${c}" stroke-width="4" stroke-linecap="round"/>`,
+    box:`<path d="M96 57l64-27 64 27-64 28zM96 57v61l64 29 64-29V57M160 85v62" fill="#f6f0e6" stroke="${c}" stroke-width="5"/>`,
+    path:`<path d="M118 138q-32-33 16-61t34-61M202 138q29-36-16-60t-31-62" fill="none" stroke="${c}" stroke-width="6" stroke-linecap="round"/>`,
+    refresh:`<path d="M111 57q43-46 91-8l17 17M219 66V40M209 105q-43 46-91 8l-17-17M101 96v26" fill="none" stroke="${g}" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>`,
+    no:`<circle cx="160" cy="82" r="54" fill="#fff5f6" stroke="${r}" stroke-width="7"/><path d="M122 44l76 76" stroke="${r}" stroke-width="8" stroke-linecap="round"/>`,
+    location:`<path d="M160 25q45 0 45 43 0 35-45 78-45-43-45-78 0-43 45-43z" fill="#fff2f3" stroke="${r}" stroke-width="5"/><circle cx="160" cy="68" r="16" fill="#fff" stroke="${r}" stroke-width="5"/>`,
+    shape:`<circle cx="112" cy="82" r="32" fill="#edf3ff" stroke="${c}" stroke-width="4"/><rect x="166" y="50" width="64" height="64" rx="6" fill="#fff8df" stroke="${c}" stroke-width="4"/>`,
+    road:`<path d="M128 143l21-126h22l21 126z" fill="#e8ebef" stroke="${c}" stroke-width="4"/><path d="M160 32v23M160 72v23M160 112v19" stroke="#fff" stroke-width="6"/>`,
+    bridge:`<path d="M72 117h176M93 117V83M227 117V83M93 83q67-69 134 0M125 117V74M195 117V74" fill="none" stroke="${c}" stroke-width="6"/><path d="M73 131h174" stroke="${blue}" stroke-width="8" stroke-linecap="round"/>`,
+    careful:`<path d="M75 83q85-70 170 0-85 70-170 0z" fill="#fff" stroke="${c}" stroke-width="5"/><circle cx="160" cy="83" r="24" fill="#eef3ff" stroke="${c}" stroke-width="4"/><circle cx="160" cy="83" r="8" fill="${r}"/>`,
+    customer:`<path d="M100 54h18l12 58h82l15-40h-103M145 127a8 8 0 1 0 0 .1M202 127a8 8 0 1 0 0 .1" fill="none" stroke="${c}" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>`,
+    same:`<rect x="89" y="52" width="58" height="72" rx="9" fill="#f4f7ff" stroke="${c}" stroke-width="5"/><rect x="173" y="52" width="58" height="72" rx="9" fill="#f4f7ff" stroke="${c}" stroke-width="5"/><path d="M148 88h24" stroke="${r}" stroke-width="7"/>`,
+    water:`<path d="M160 30q43 52 43 75a43 43 0 1 1-86 0q0-23 43-75z" fill="#e8f5ff" stroke="${blue}" stroke-width="5"/>`,
+    tired:`<circle cx="160" cy="80" r="52" fill="#fff8e8" stroke="${c}" stroke-width="5"/><path d="M132 70h18M170 70h18M137 105q23-15 46 0" fill="none" stroke="${c}" stroke-width="5" stroke-linecap="round"/>`,
+    travel:`<rect x="106" y="50" width="108" height="78" rx="12" fill="#f7f0e7" stroke="${c}" stroke-width="5"/><path d="M137 50V37h46v13M160 50v78" stroke="${c}" stroke-width="5"/>`,
+    people:`<circle cx="130" cy="61" r="20" fill="#eef2f7" stroke="${c}" stroke-width="4"/><circle cx="190" cy="61" r="20" fill="#eef2f7" stroke="${c}" stroke-width="4"/><path d="M98 127q5-38 32-38t32 38M158 127q5-38 32-38t32 38" fill="#fff" stroke="${c}" stroke-width="4"/>`,
+    camera:`<rect x="87" y="55" width="146" height="76" rx="12" fill="#eef2f7" stroke="${c}" stroke-width="5"/><circle cx="160" cy="93" r="27" fill="#fff" stroke="${c}" stroke-width="5"/><path d="M118 55l10-18h41l10 18" stroke="${c}" stroke-width="5"/>`,
+    star:`<path d="M160 28l16 35 38 4-29 25 9 37-34-19-34 19 9-37-29-25 38-4z" fill="#fff5d6" stroke="${y}" stroke-width="5"/>`,
+    project:`<path d="M92 46h58l12 15h66v70H92z" fill="#f4f7fb" stroke="${c}" stroke-width="5"/><path d="M119 84h82M119 104h62" stroke="${r}" stroke-width="5" stroke-linecap="round"/>`,
+    office:`<path d="M103 36h114v100H103z" fill="#f5f7fa" stroke="${c}" stroke-width="5"/><path d="M124 59h20M176 59h20M124 82h20M176 82h20M124 105h20M176 105h20M151 136v-22h18v22" stroke="${c}" stroke-width="5"/>`,
+    arrow:`<path d="M83 82h133M180 48l36 34-36 34" fill="none" stroke="${r}" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>`,
+    next:`<path d="M91 82h102M163 50l34 32-34 32M221 50v64" fill="none" stroke="${c}" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>`,
+    truck:`<path d="M76 58h98v60H76zM174 78h39l31 28v12h-70z" fill="#f4f7fb" stroke="${c}" stroke-width="5"/><circle cx="112" cy="122" r="12" fill="#fff" stroke="${c}" stroke-width="5"/><circle cx="210" cy="122" r="12" fill="#fff" stroke="${c}" stroke-width="5"/>`,
+    worker:`<circle cx="160" cy="57" r="24" fill="#fff3cc" stroke="${c}" stroke-width="5"/><path d="M122 130q5-45 38-45t38 45" fill="#f3f6fb" stroke="${c}" stroke-width="5"/><path d="M136 48q24-26 48 0" stroke="${y}" stroke-width="9" stroke-linecap="round"/>`,
+    museum:`<path d="M80 61l80-31 80 31zM96 70h128M105 70v54M138 70v54M182 70v54M215 70v54M90 132h140" fill="#f8f6f0" stroke="${c}" stroke-width="5"/>`,
+    right:`<path d="M82 82h137M184 47l36 35-36 35" fill="none" stroke="${g}" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>`,
+    left:`<path d="M238 82H101M136 47l-36 35 36 35" fill="none" stroke="${g}" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>`,
+    lift:`<rect x="103" y="49" width="114" height="78" rx="10" fill="#f6f8fb" stroke="${c}" stroke-width="5"/><path d="M160 108V65M140 84l20-20 20 20" fill="none" stroke="${r}" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>`,
+    heavy:`<path d="M118 58h84l18 67H100z" fill="#eef2f7" stroke="${c}" stroke-width="5"/><path d="M140 58q0-28 20-28t20 28" fill="none" stroke="${c}" stroke-width="5"/>`,
+    replay:`<path d="M211 65q-20-34-61-31-44 4-57 43M109 54L92 78l29 8M109 101q20 34 61 31 44-4 57-43M211 112l17-24-29-8" fill="none" stroke="${g}" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><path d="M148 61l37 21-37 21z" fill="${r}"/>`,
+    cable:`<path d="M89 58h30v44H89zM201 58h30v44h-30zM119 80q42 48 82 0" fill="none" stroke="${c}" stroke-width="6"/><path d="M97 48v10M111 48v10M209 48v10M223 48v10" stroke="${c}" stroke-width="5"/>`,
+    printer:`<rect x="102" y="32" width="116" height="45" rx="6" fill="#fff" stroke="${c}" stroke-width="5"/><rect x="83" y="69" width="154" height="58" rx="10" fill="#eef2f7" stroke="${c}" stroke-width="5"/><rect x="112" y="99" width="96" height="40" rx="4" fill="#fff" stroke="${c}" stroke-width="4"/><circle cx="213" cy="86" r="5" fill="${g}"/>`,
+    phone:`<rect x="125" y="28" width="70" height="108" rx="13" fill="#f4f7fb" stroke="${c}" stroke-width="5"/><circle cx="160" cy="119" r="5" fill="${c}"/><path d="M142 46h36" stroke="${c}" stroke-width="4" stroke-linecap="round"/>`,
+    version:`<rect x="102" y="40" width="116" height="92" rx="12" fill="#f4f7fb" stroke="${c}" stroke-width="5"/><text x="160" y="96" text-anchor="middle" font-size="34" font-weight="900" fill="${r}">V1</text>`,
+    new:`<path d="M160 26l13 32 34-8-18 30 29 18-34 6 2 35-26-23-26 23 2-35-34-6 29-18-18-30 34 8z" fill="#fff4cf" stroke="${y}" stroke-width="5"/>`,
+    save:`<path d="M104 33h103l21 21v82H104z" fill="#f4f7fb" stroke="${c}" stroke-width="5"/><rect x="126" y="40" width="58" height="33" fill="#fff" stroke="${c}" stroke-width="4"/><rect x="132" y="95" width="64" height="41" rx="5" fill="#fff" stroke="${c}" stroke-width="4"/>`,
+    folder:`<path d="M88 51h62l13 15h69v67H88z" fill="#fff8df" stroke="${c}" stroke-width="5"/>`,
+    dust:`<path d="M95 108h130M119 95l16-40 18 40M168 95l10-26 14 26" fill="none" stroke="${c}" stroke-width="5" stroke-linecap="round"/><circle cx="112" cy="42" r="5" fill="#b8a98b"/><circle cx="200" cy="49" r="6" fill="#b8a98b"/><circle cx="219" cy="74" r="4" fill="#b8a98b"/>`,
+    organize:`<rect x="89" y="46" width="142" height="85" rx="10" fill="#f8fafc" stroke="${c}" stroke-width="5"/><path d="M113 70h93M113 90h93M113 110h93" stroke="${c}" stroke-width="4"/><circle cx="101" cy="70" r="4" fill="${r}"/><circle cx="101" cy="90" r="4" fill="${g}"/><circle cx="101" cy="110" r="4" fill="${y}"/>`,
+    calendar:`<rect x="92" y="42" width="136" height="95" rx="12" fill="#fff" stroke="${c}" stroke-width="5"/><path d="M92 70h136M124 32v22M196 32v22" stroke="${c}" stroke-width="5"/><path d="M119 89h16M152 89h16M185 89h16M119 112h16M152 112h16M185 112h16" stroke="${r}" stroke-width="5" stroke-linecap="round"/>`,
+    idea:`<circle cx="160" cy="68" r="39" fill="#fff6d9" stroke="${y}" stroke-width="5"/><path d="M144 112h32M148 125h24" stroke="${c}" stroke-width="5" stroke-linecap="round"/><path d="M160 18v-8M111 40l-8-8M209 40l8-8" stroke="${c}" stroke-width="4" stroke-linecap="round"/>`,
+    book:`<path d="M90 43q42-13 70 8v80q-30-19-70-8zM230 43q-42-13-70 8v80q30-19 70-8z" fill="#f8fafc" stroke="${c}" stroke-width="5"/>`,
+    puzzle:`<path d="M103 50h42q0-19 15-19t15 19h42v34q19 0 19 15t-19 15v24h-42q0-19-15-19t-15 19h-42v-34q19 0 19-15t-19-15z" fill="#f1f5ff" stroke="${c}" stroke-width="5"/>`,
+    percent:`<circle cx="127" cy="59" r="18" fill="#fff" stroke="${c}" stroke-width="5"/><circle cx="193" cy="105" r="18" fill="#fff" stroke="${c}" stroke-width="5"/><path d="M116 120l88-81" stroke="${r}" stroke-width="7" stroke-linecap="round"/>`,
+    marketing:`<path d="M92 83l80-31v62l-80-31z" fill="#fff3f4" stroke="${c}" stroke-width="5"/><path d="M172 67h29q25 0 25 16t-25 16h-29M106 96l12 34" fill="none" stroke="${c}" stroke-width="5"/>`,
+    polite:`<circle cx="160" cy="80" r="52" fill="#fff8e9" stroke="${c}" stroke-width="5"/><circle cx="141" cy="68" r="5" fill="${c}"/><circle cx="179" cy="68" r="5" fill="${c}"/><path d="M136 94q24 23 48 0" fill="none" stroke="${g}" stroke-width="5" stroke-linecap="round"/>`,
+    responsible:`<rect x="101" y="37" width="118" height="100" rx="10" fill="#f8fafc" stroke="${c}" stroke-width="5"/><path d="M128 69l12 12 22-24M128 99l12 12 22-24M176 73h23M176 103h23" fill="none" stroke="${g}" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>`,
+    handshake:`<path d="M80 85l38-32 35 20 27-13 60 37-27 33-45-25-28 15-60-35z" fill="#fff4e5" stroke="${c}" stroke-width="5"/><path d="M129 69l31 25 28-11" fill="none" stroke="${c}" stroke-width="5"/>`,
+    film:`<rect x="92" y="48" width="136" height="84" rx="10" fill="#f7f7f7" stroke="${c}" stroke-width="5"/><path d="M92 72h136M112 48l18 24M151 48l18 24M190 48l18 24" stroke="${c}" stroke-width="4"/><path d="M148 88l34 20-34 20z" fill="${r}"/>`,
+    pilgrimage:`<path d="M116 60h88v70h-88z" fill="#20242a" stroke="${c}" stroke-width="5"/><rect x="118" y="61" width="84" height="12" fill="#d6b04c"/><path d="M100 130h120" stroke="${c}" stroke-width="5"/>`
+  };
+  return (svgs[type]||svgs.book);
+}
+
+
+
+function bgFor(type){
+  const warm=['shop','money','bank','document','box','heavy','new','save','folder','dust','book','puzzle','percent','marketing','handshake','film','pilgrimage'];
+  const green=['goal','learning','school','check','map','path','location','road','bridge','travel','museum','right','left','organize','calendar','project'];
+  const blue=['work','time','computer','eye','chart','chat','plane','science','office','printer','phone','version','refresh','cable','replay'];
+  if(warm.includes(type)) return '#FFF6E5';
+  if(green.includes(type)) return '#EDF7ED';
+  if(blue.includes(type)) return '#EAF3FB';
+  return '#F3F0FA';
+}
+function makeSVG(item,index){
+  const sky=bgFor(item.icon);
+  return `<svg viewBox="0 0 320 240" role="img" aria-label="Illustration for ${escapeAttr(item.word)}" xmlns="http://www.w3.org/2000/svg">
+    <rect width="320" height="240" rx="20" fill="${sky}"/>
+    <circle cx="272" cy="42" r="18" fill="#F3C44E" opacity=".72"/>
+    <ellipse cx="160" cy="205" rx="106" ry="17" fill="#9FB2C7" opacity=".16"/>
+    <g transform="translate(0 39)">${iconArt(item.icon)}</g>
+  </svg>`;
+}
+
+const homeScreen=document.getElementById('homeScreen');
+const vocabScreen=document.getElementById('vocabScreen');
+const cardsEl=document.getElementById('cards');
+const progressPill=document.getElementById('progressPill');
+const dotsEl=document.getElementById('pageDots');
+const prevBtn=document.getElementById('prevBtn');
+const nextBtn=document.getElementById('nextBtn');
+const overlay=document.getElementById('exampleOverlay');
+const exampleBox=document.getElementById('exampleBox');
+const sentenceEl=document.getElementById('exampleSentence');
+const exampleAudio=document.getElementById('exampleAudio');
+const toast=document.getElementById('toast');
+
+function escapeHtml(str){return String(str).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#39;')}
+function escapeAttr(str){return escapeHtml(str)}
+function cleanSpeechText(text){return String(text).replace('organise / organize','organise')}
+
+function renderPage(pageIndex){
+  const totalPages=Math.ceil(WORDS.length/PAGE_SIZE);
+  currentPage=Math.max(0,Math.min(pageIndex,totalPages-1));
+  const start=currentPage*PAGE_SIZE;
+  const pageWords=WORDS.slice(start,start+PAGE_SIZE);
+  cardsEl.innerHTML=pageWords.map((item,i)=>`<article class="card">
+    <div class="word-line"><h2 class="word">${escapeHtml(item.word)}</h2><button class="audio-mini speak-word" data-text="${escapeAttr(item.word)}" aria-label="Pronounce ${escapeAttr(item.word)}">${headsetSVG}</button></div>
+    <div class="arabic-word" lang="ar">${escapeHtml(item.ar)}</div>
+    <div class="picture">${makeSVG(item,start+i)}</div>
+    <div class="card-footer"><button class="ex-btn show-example" data-example="${escapeAttr(item.ex)}" aria-label="Show example for ${escapeAttr(item.word)}">EX</button></div>
+  </article>`).join('');
+  progressPill.textContent=`Page ${currentPage+1} of ${totalPages}`;
+  prevBtn.disabled=currentPage===0;nextBtn.disabled=currentPage===totalPages-1;
+  dotsEl.innerHTML=Array.from({length:totalPages},(_,i)=>`<button class="dot ${i===currentPage?'active':''}" aria-label="Go to page ${i+1}" data-page="${i}"></button>`).join('');
+  dotsEl.querySelectorAll('.dot').forEach(dot=>dot.addEventListener('click',()=>renderPage(Number(dot.dataset.page))));
+  cardsEl.querySelectorAll('.speak-word').forEach(btn=>btn.addEventListener('click',()=>speakBritish(cleanSpeechText(btn.dataset.text))));
+  cardsEl.querySelectorAll('.show-example').forEach(btn=>btn.addEventListener('click',()=>{currentSentence=btn.dataset.example;sentenceEl.textContent=currentSentence;overlay.classList.add('open');overlay.setAttribute('aria-hidden','false')}));
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function closeOverlay(){overlay.classList.remove('open');overlay.setAttribute('aria-hidden','true');if('speechSynthesis' in window)speechSynthesis.cancel()}
+function showToast(message){toast.textContent=message;toast.classList.add('show');clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>toast.classList.remove('show'),2600)}
+function speakBritish(text){
+  if(!text)return;if(!('speechSynthesis' in window)){showToast('Speech is not supported by this browser.');return}
+  speechSynthesis.cancel();const utter=new SpeechSynthesisUtterance(text);utter.lang='en-GB';utter.rate=.86;utter.pitch=1;
+  const voices=speechSynthesis.getVoices();
+  const femaleNames=/sonia|libby|serena|kate|susan|hazel|martha|female|google uk english female/i;
+  const exactGB=voices.filter(v=>/^en[-_]GB$/i.test(v.lang));
+  const preferred=exactGB.find(v=>femaleNames.test(v.name))||exactGB[0]||voices.find(v=>femaleNames.test(v.name)&&/^en/i.test(v.lang))||voices.find(v=>/^en/i.test(v.lang));
+  if(preferred)utter.voice=preferred;speechSynthesis.speak(utter);
+}
+
+document.getElementById('startBtn').addEventListener('click',()=>{homeScreen.classList.remove('active');vocabScreen.classList.add('active');renderPage(0)});
+document.getElementById('homeBtn').addEventListener('click',()=>{vocabScreen.classList.remove('active');homeScreen.classList.add('active');closeOverlay();window.scrollTo({top:0,behavior:'instant'})});
+prevBtn.addEventListener('click',()=>{if(currentPage>0)renderPage(currentPage-1)});
+nextBtn.addEventListener('click',()=>{const total=Math.ceil(WORDS.length/PAGE_SIZE);if(currentPage<total-1)renderPage(currentPage+1)});
+overlay.addEventListener('click',closeOverlay);exampleBox.addEventListener('click',e=>e.stopPropagation());document.addEventListener('keydown',e=>{if(e.key==='Escape')closeOverlay()});exampleAudio.addEventListener('click',()=>speakBritish(currentSentence));
+if('speechSynthesis' in window){speechSynthesis.getVoices();window.speechSynthesis.onvoiceschanged=()=>speechSynthesis.getVoices()}
+</script>
+</body>
+</html>
