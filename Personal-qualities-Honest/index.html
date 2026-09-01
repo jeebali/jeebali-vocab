@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Personal Qualities | Honest</title>
+  <style>
+    :root{
+      --bg:#edf3fb;
+      --panel:#ffffff;
+      --text:#102754;
+      --muted:#657998;
+      --line:#dbe5f4;
+      --blue:#2e6fdf;
+      --blue-dark:#1c56bd;
+      --blue-soft:#edf3ff;
+      --green:#1f9f68;
+      --green-soft:#eefaf4;
+      --red:#ea202d;
+      --red-shadow:#f7c8cd;
+      --shadow:0 16px 34px rgba(21,46,92,.08);
+      --shadow-strong:0 14px 24px rgba(46,111,223,.22);
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;min-height:100%}
+    body{
+      font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+      background:linear-gradient(180deg,#f3f7fd 0%, var(--bg) 100%);
+      color:var(--text);
+      padding:24px;
+      padding-top:max(24px, env(safe-area-inset-top));
+      padding-right:max(24px, env(safe-area-inset-right));
+      padding-bottom:max(24px, env(safe-area-inset-bottom));
+      padding-left:max(24px, env(safe-area-inset-left));
+    }
+    button{font:inherit;border:none;background:none;color:inherit;cursor:pointer}
+    button:focus-visible{outline:3px solid #8eb4ff;outline-offset:3px}
+    .app{max-width:1480px;margin:0 auto}
+    .screen{display:none}
+    .screen.active{display:block}
+
+    .hero{
+      max-width:980px;
+      margin:18px auto 0;
+      background:rgba(255,255,255,.88);
+      border:1px solid rgba(255,255,255,.92);
+      border-radius:40px;
+      box-shadow:0 22px 42px rgba(16,43,88,.08);
+      padding:clamp(28px,4vw,46px);
+      text-align:center;
+    }
+    .eyebrow{margin:0 0 18px;font-weight:900;text-transform:uppercase;letter-spacing:.16em;color:var(--muted);font-size:clamp(16px,1.7vw,22px)}
+    .hero-title{
+      margin:0 auto;
+      width:min(100%,780px);
+      background:var(--red);
+      color:#fff;
+      border-radius:28px;
+      padding:clamp(28px,4vw,40px) 24px;
+      box-shadow:0 11px 0 var(--red-shadow);
+      font-size:clamp(34px,5vw,66px);
+      line-height:1.06;
+      font-weight:900;
+      letter-spacing:-.03em;
+    }
+    .hero-info{margin:26px auto 0;display:flex;justify-content:center;gap:16px;flex-wrap:wrap}
+    .hero-pill{min-height:50px;padding:0 18px;border-radius:999px;background:var(--panel);border:1px solid var(--line);display:inline-flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;color:var(--muted);box-shadow:var(--shadow)}
+    .start-btn{margin-top:30px;min-height:60px;padding:0 28px;border-radius:18px;background:var(--blue);color:#fff;font-size:22px;font-weight:900;display:inline-flex;align-items:center;justify-content:center;gap:10px;box-shadow:var(--shadow-strong);transition:transform .16s ease}
+    .start-btn:hover{transform:translateY(-1px)}
+
+    .page-top{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;margin-bottom:20px;flex-wrap:wrap}
+    .home-btn,.page-pill,.nav-btn{min-height:56px;padding:0 20px;border-radius:18px;background:var(--panel);border:1px solid var(--line);box-shadow:var(--shadow);display:inline-flex;align-items:center;justify-content:center;gap:8px;font-size:18px;font-weight:900;color:var(--blue-dark);transition:transform .16s ease}
+    .home-btn:hover,.nav-btn:hover:not(:disabled){transform:translateY(-1px)}
+    .page-pill{border-radius:999px;color:var(--muted)}
+    .page-heading{flex:1 1 420px;text-align:center;align-self:center}
+    .page-heading h1{margin:0;font-size:clamp(34px,4vw,58px);line-height:1.05;font-weight:900;letter-spacing:-.03em}
+    .page-heading p{margin:8px 0 0;font-size:clamp(18px,2vw,24px);color:var(--muted);font-weight:800}
+
+    .card-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;align-items:stretch}
+    .card-grid.center-two{grid-template-columns:repeat(2,minmax(300px,360px));justify-content:center}
+    .card{background:var(--panel);border:1px solid var(--line);border-radius:28px;box-shadow:var(--shadow);padding:18px 18px 16px;display:flex;flex-direction:column;min-height:100%}
+    .word-area{min-height:108px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:8px;position:relative}
+    .word-row{display:flex;align-items:flex-start;justify-content:center;width:100%;position:relative}
+    .word-box{width:100%;display:flex;align-items:center;justify-content:center;min-height:64px;padding:0 44px 0 12px}
+    .word{margin:0;text-align:center;line-height:1.02;font-weight:900;letter-spacing:-.055em;font-size:40px;word-break:normal;overflow-wrap:normal;hyphens:none;white-space:nowrap;max-width:100%}
+    .word-row > .icon-btn{position:absolute;right:0;top:0}
+    .collocation-row{display:flex;align-items:flex-start;justify-content:center;gap:8px;flex-wrap:wrap}
+    .pos{margin:0 auto;display:inline-flex;align-items:center;justify-content:center;min-height:28px;padding:0 10px;border-radius:999px;background:var(--blue-soft);color:var(--blue-dark);font-size:12px;font-weight:900;letter-spacing:.08em;text-transform:uppercase}
+    .icon-btn{width:38px;height:38px;border-radius:50%;background:var(--blue-soft);color:var(--blue);border:1px solid #dce8ff;display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;transition:transform .16s ease}
+    .icon-btn:hover{transform:translateY(-1px)}
+    .icon-btn svg{width:20px;height:20px;display:block}
+
+    .ar-wrap{margin-top:10px;text-align:center;min-height:42px}
+    .ar-btn{min-width:44px;height:34px;padding:0 12px;border-radius:999px;background:var(--green-soft);color:var(--green);border:1px solid #ccefdc;font-size:14px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;display:inline-flex;align-items:center;justify-content:center}
+    .ar-text{margin-top:8px;min-height:22px;font-size:18px;font-weight:800;color:#4e5f80;opacity:0;transform:translateY(-3px);transition:opacity .18s ease, transform .18s ease}
+    .ar-text.show{opacity:1;transform:translateY(0)}
+
+    .art{margin:14px 0 16px;background:#dce8f5;border:1px solid #d2e1f1;border-radius:20px;overflow:hidden;aspect-ratio:4/3}
+    .art svg{width:100%;height:100%;display:block}
+
+    .collocation-wrap{margin-top:auto}
+    .collocation{margin:0;font-size:clamp(18px,1.45vw,28px);font-weight:900;letter-spacing:-.02em;text-align:center;line-height:1.2}
+    .ex-wrap{margin-top:14px;display:flex;justify-content:center}
+    .ex-btn{width:56px;height:56px;border-radius:50%;background:var(--blue);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;box-shadow:var(--shadow-strong);transition:transform .16s ease}
+    .ex-btn:hover{transform:translateY(-1px)}
+
+    .nav-row{margin-top:18px;display:flex;align-items:center;justify-content:space-between;gap:14px}
+    .nav-btn.primary{background:var(--blue);color:#fff;border-color:var(--blue);box-shadow:var(--shadow-strong)}
+    .nav-btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+    .dots{display:flex;align-items:center;justify-content:center;gap:10px;flex:1}
+    .dot{width:13px;height:13px;border-radius:50%;background:#d0d8e8;border:none;padding:0;box-shadow:none;min-height:auto}
+    .dot.active{background:var(--blue)}
+
+    .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;padding:22px;background:rgba(8,24,50,.52);backdrop-filter:blur(7px);z-index:1000}
+    .modal.open{display:flex}
+    .modal-card{width:min(760px,100%);background:#fff;border-radius:30px;box-shadow:0 30px 70px rgba(10,28,58,.26);padding:28px 24px 24px;position:relative;text-align:center}
+    .close-btn{position:absolute;top:14px;right:14px;width:42px;height:42px;border-radius:50%;background:var(--blue-soft);color:var(--blue);display:inline-flex;align-items:center;justify-content:center;font-size:28px;font-weight:700}
+    .modal-label{margin:0;font-size:13px;font-weight:900;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+    .modal-collocation-row{margin-top:12px;display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap}
+    .modal-collocation{margin:0;font-size:clamp(28px,3.5vw,44px);line-height:1.1;font-weight:900;letter-spacing:-.03em}
+    .modal-example{margin:18px auto 0;max-width:580px;font-size:clamp(21px,2vw,30px);line-height:1.5;font-weight:600;color:#23365d}
+    .modal-audio{margin-top:22px;display:flex;justify-content:center}
+    .modal-audio .icon-btn{width:56px;height:56px;background:var(--blue);color:#fff;border:none;box-shadow:var(--shadow-strong)}
+
+    @media (max-width: 1180px){
+      .card-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .card-grid.center-two{grid-template-columns:repeat(2,minmax(280px,1fr))}
+    }
+    @media (max-width: 760px){
+      body{padding:16px}
+      .hero{padding:24px 18px;border-radius:30px}
+      .hero-title{border-radius:22px;box-shadow:0 8px 0 var(--red-shadow)}
+      .page-top{display:grid;grid-template-columns:1fr;gap:12px}
+      .page-heading{text-align:center}
+      .home-btn,.page-pill{justify-content:center}
+      .card-grid,.card-grid.center-two{grid-template-columns:1fr;justify-content:stretch}
+      .card{border-radius:24px;padding:16px 14px 14px}
+      .word-area{min-height:96px}
+      .word-box{min-height:56px;padding:0 42px 0 8px}
+      .word{font-size:33px}
+      .nav-row{position:sticky;bottom:max(8px, env(safe-area-inset-bottom));background:rgba(237,243,251,.94);backdrop-filter:blur(8px);padding-top:10px}
+      .dot{width:11px;height:11px}
+      .modal{padding:14px}
+      .modal-card{padding:24px 16px 20px;border-radius:24px}
+    }
+    @media (prefers-reduced-motion: reduce){*,*::before,*::after{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+  </style>
+</head>
+<body>
+  <div class="app">
+    <section class="screen active" id="homeScreen" aria-label="Home screen">
+      <div class="hero">
+        <p class="eyebrow">Vocabulary Learning App</p>
+        <div class="hero-title">Personal Qualities | Honest</div>
+        <div class="hero-info">
+          <div class="hero-pill">18 words</div>
+          <div class="hero-pill">5 pages</div>
+          <div class="hero-pill">Real-life examples</div>
+        </div>
+        <button class="start-btn" id="startBtn" type="button">Start Learning →</button>
+      </div>
+    </section>
+
+    <section class="screen" id="vocabScreen" aria-label="Vocabulary page">
+      <div class="page-top">
+        <button class="home-btn" id="homeBtn" type="button" aria-label="Go back to home">← Home</button>
+        <div class="page-heading">
+          <h1>Personal Qualities | Honest</h1>
+          <p id="pageSummary">Words 1–4 of 18</p>
+        </div>
+        <div class="page-pill" id="pagePill">Page 1 of 5</div>
+      </div>
+
+      <main class="card-grid" id="cardGrid"></main>
+
+      <div class="nav-row" aria-label="Navigation">
+        <button class="nav-btn" id="prevBtn" type="button">← Previous</button>
+        <div class="dots" id="dots"></div>
+        <button class="nav-btn primary" id="nextBtn" type="button">Next →</button>
+      </div>
+    </section>
+  </div>
+
+  <div class="modal" id="exampleModal" role="dialog" aria-modal="true" aria-labelledby="modalCollocation" aria-describedby="modalExample">
+    <div class="modal-card">
+      <button class="close-btn" id="closeModalBtn" type="button" aria-label="Close example">×</button>
+      <p class="modal-label">Collocation + Example</p>
+      <div class="modal-collocation-row">
+        <h2 class="modal-collocation" id="modalCollocation"></h2>
+        <button class="icon-btn" id="modalCollocationAudio" type="button" aria-label="Listen to collocation"></button>
+      </div>
+      <p class="modal-example" id="modalExample"></p>
+      <div class="modal-audio">
+        <button class="icon-btn" id="modalExampleAudio" type="button" aria-label="Listen to example"></button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const PAGE_SIZE = 4;
+    const headsetIcon = `
+      <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M4 13v-1a8 8 0 0 1 16 0v1"/>
+        <rect x="3" y="12" width="4" height="7" rx="2"/>
+        <rect x="17" y="12" width="4" height="7" rx="2"/>
+        <path d="M7 19c0 1.7 1.3 3 3 3h4"/>
+      </svg>`;
+
+    const sceneArt = {
+      honest: () => `
+        <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+          <rect width="400" height="300" fill="#dce8f5"/>
+          <rect y="210" width="400" height="90" fill="#eef1f7"/>
+          <circle cx="326" cy="60" r="23" fill="#f2c042"/>
+          <rect x="228" y="122" width="116" height="78" rx="14" fill="#8eb2e4"/>
+          <rect x="240" y="134" width="92" height="56" rx="10" fill="#ffffff"/>
+          <rect x="58" y="90" width="116" height="110" rx="14" fill="#ffd26b"/>
+          <rect x="72" y="104" width="88" height="84" rx="9" fill="#fff8ea"/>
+          <line x1="83" y1="127" x2="148" y2="127" stroke="#e36a7d" stroke-width="4"/>
+          <line x1="83" y1="147" x2="148" y2="147" stroke="#8ea8d3" stroke-width="4"/>
+          <circle cx="119" cy="162" r="17" fill="#e8a185"/>
+          <rect x="109" y="178" width="20" height="43" rx="10" fill="#44506b"/>
+          <rect x="94" y="187" width="48" height="8" rx="4" fill="#44506b" transform="rotate(12 94 187)"/>
+          <rect x="113" y="219" width="9" height="39" rx="4.5" fill="#44506b"/>
+          <rect x="132" y="219" width="9" height="39" rx="4.5" fill="#44506b"/>
+          <circle cx="292" cy="149" r="17" fill="#efb399"/>
+          <rect x="282" y="166" width="20" height="48" rx="10" fill="#44506b"/>
+          <rect x="264" y="177" width="48" height="8" rx="4" fill="#44506b"/>
+          <rect x="286" y="212" width="9" height="41" rx="4.5" fill="#44506b"/>
+          <rect x="304" y="212" width="9" height="41" rx="4.5" fill="#44506b"/>
+          <path d="M140 172c38-20 82-27 118-12" stroke="#ef4e5b" stroke-width="7" fill="none" stroke-linecap="round"/>
+          <path d="M244 148l16 4-11 13" fill="#ef4e5b"/>
+        </svg>`,
+      decent: () => `
+        <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+          <rect width="400" height="300" fill="#dce8f5"/>
+          <rect y="222" width="400" height="78" fill="#cae1b1"/>
+          <circle cx="82" cy="60" r="22" fill="#f2c042"/>
+          <path d="M0 222c60-30 114-34 182-14 73 22 133 20 218-4v96H0z" fill="#acd087"/>
+          <circle cx="117" cy="163" r="17" fill="#e8a185"/>
+          <rect x="107" y="179" width="20" height="44" rx="10" fill="#44506b"/>
+          <rect x="88" y="190" width="44" height="8" rx="4" fill="#44506b"/>
+          <rect x="109" y="221" width="9" height="39" rx="4.5" fill="#44506b"/>
+          <rect x="128" y="221" width="9" height="39" rx="4.5" fill="#44506b"/>
+          <circle cx="284" cy="161" r="17" fill="#efb399"/>
+          <rect x="274" y="177" width="20" height="44" rx="10" fill="#44506b"/>
+          <rect x="255" y="188" width="44" height="8" rx="4" fill="#44506b" transform="rotate(-12 255 188)"/>
+          <rect x="276" y="219" width="9" height="39" rx="4.5" fill="#44506b"/>
+          <rect x="295" y="219" width="9" height="39" rx="4.5" fill="#44506b"/>
+          <rect x="181" y="175" width="34" height="22" rx="6" fill="#8c5d40"/>
+          <circle cx="190" cy="186" r="2.7" fill="#d7b183"/>
+          <path d="M130 190c18-8 32-12 46-13" stroke="#2e6fdf" stroke-width="6" fill="none" stroke-linecap="round"/>
+          <path d="M215 181c13 0 23 3 37 10" stroke="#17a36b" stroke-width="6" fill="none" stroke-linecap="round"/>
+        </svg>`,
+      genuine: () => `
+        <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+          <rect width="400" height="300" fill="#dce8f5"/>
+          <rect y="216" width="400" height="84" fill="#eef1f6"/>
+          <circle cx="321" cy="58" r="23" fill="#f2c042"/>
+          <circle cx="111" cy="159" r="17" fill="#e8a185"/>
+          <rect x="101" y="176" width="20" height="46" rx="10" fill="#44506b"/>
+          <rect x="84" y="187" width="44" height="8" rx="4" fill="#44506b"/>
+          <rect x="103" y="220" width="9" height="40" rx="4.5" fill="#44506b"/>
+          <rect x="122" y="220" width="9" height="40" rx="4.5" fill="#44506b"/>
+          <circle cx="288" cy="154" r="17" fill="#efb399"/>
+          <rect x="278" y="171" width="20" height="46" rx="10" fill="#44506b"/>
+          <rect x="260" y="183" width="42" height="8" rx="4" fill="#44506b" transform="rotate(-18 260 183)"/>
+          <rect x="281" y="215" width="9" height="40" rx="4.5" fill="#44506b"/>
+          <rect x="300" y="215" width="9" height="40" rx="4.5" fill="#44506b"/>
+          <rect x="172" y="164" width="57" height="34" rx="10" fill="#2a77e2"/>
+          <rect x="177" y="169" width="47" height="24" rx="7" fill="#eef6ff"/>
+          <path d="M194 177l11 9m0-9l-11 9" stroke="#ef4e5b" stroke-width="3.8" stroke-linecap="round"/>
+          <path d="M140 121c28-18 63-18 91 0" stroke="#ef4e5b" stroke-width="7" fill="none" stroke-linecap="round"/>
+          <path d="M163 136c10 9 17 12 23 12 7 0 14-3 23-12" stroke="#ef4e5b" stroke-width="7" fill="none" stroke-linecap="round"/>
+        </svg>`,
+      honesty: () => `
+        <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+          <rect width="400" height="300" fill="#dce8f5"/>
+          <rect y="214" width="400" height="86" fill="#f0e4d7"/>
+          <circle cx="82" cy="60" r="22" fill="#f2c042"/>
+          <rect x="248" y="104" width="92" height="96" rx="14" fill="#8eb2e4"/>
+          <rect x="262" y="116" width="64" height="70" rx="8" fill="#ffffff"/>
+          <rect x="270" y="129" width="46" height="7" rx="3.5" fill="#2e6fdf"/>
+          <rect x="270" y="145" width="46" height="7" rx="3.5" fill="#ef4e5b"/>
+          <circle cx="114" cy="157" r="17" fill="#e8a185"/>
+          <rect x="104" y="173" width="20" height="47" rx="10" fill="#44506b"/>
+          <rect x="86" y="184" width="44" height="8" rx="4" fill="#44506b"/>
+          <rect x="107" y="218" width="9" height="40" rx="4.5" fill="#44506b"/>
+          <rect x="126" y="218" width="9" height="40" rx="4.5" fill="#44506b"/>
+          <circle cx="210" cy="152" r="17" fill="#efb399"/>
+          <rect x="200" y="168" width="20" height="47" rx="10" fill="#44506b"/>
+          <rect x="184" y="178" width="39" height="8" rx="4" fill="#44506b" transform="rotate(-8 184 178)"/>
+          <rect x="203" y="213" width="9" height="40" rx="4.5" fill="#44506b"/>
+          <rect x="222" y="213" width="9" height="40" rx="4.5" fill="#44506b"/>
+          <path d="M148 122c17-11 34-14 52-10" stroke="#17a36b" stroke-width="6" fill="none" stroke-linecap="round"/>
+          <path d="M159 109c8 7 14 10 18 10 5 0 11-3 18-10" stroke="#ef4e5b" stroke-width="6" fill="none" stroke-linecap="round"/>
+        </svg>`,
+      open: () => `
+        <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+          <rect width="400" height="300" fill="#dce8f5"/>
+          <rect y="215" width="400" height="85" fill="#f0e3d3"/>
+          <rect x="64" y="138" width="177" height="54" rx="20" fill="#87a8d8"/>
+          <rect x="78" y="123" width="56" height="20" rx="10" fill="#7295ca"/>
+          <circle cx="118" cy="149" r="16" fill="#e8a185"/>
+          <rect x="108" y="164" width="19" height="39" rx="9" fill="#44506b"/>
+          <rect x="95" y="174" width="38" height="8" rx="4" fill="#44506b" transform="rotate(22 95 174)"/>
+          <rect x="110" y="201" width="9" height="37" rx="4.5" fill="#44506b"/>
+          <rect x="127" y="201" width="9" height="37" rx="4.5" fill="#44506b"/>
+          <circle cx="204" cy="150" r="16" fill="#efb399"/>
+          <rect x="194" y="165" width="19" height="39" rx="9" fill="#44506b"/>
+          <rect x="198" y="175" width="32" height="8" rx="4" fill="#44506b" transform="rotate(-18 198 175)"/>
+          <rect x="196" y="202" width="9" height="36" rx="4.5" fill="#44506b"/>
+          <rect x="212" y="202" width="9" height="36" rx="4.5" fill="#44506b"/>
+          <rect x="270" y="104" width="88" height="100" rx="12" fill="#ffd26b"/>
+          <rect x="288" y="121" width="21" height="20" rx="4" fill="#fff5d9"/>
+          <rect x="318" y="121" width="21" height="20" rx="4" fill="#fff5d9"/>
+          <path d="M146 107c17-13 43-18 62-8" stroke="#ef4e5b" stroke-width="6" fill="none" stroke-linecap="round"/>
+          <path d="M154 92l2 18 15-9" fill="#ef4e5b"/>
+        </svg>`,
+      trustNoun: () => `
+        <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+          <rect width="400" height="300" fill="#dce8f5"/>
+          <rect y="220" width="400" height="80" fill="#eceef5"/>
+          <circle cx="316" cy="60" r="22" fill="#f2c042"/>
+          <circle cx="95" cy="165" r="16" fill="#e8a185"/>
+          <rect x="86" y="180" width="18" height="42" rx="9" fill="#44506b"/>
+          <rect x="70" y="191" width="38" height="8" rx="4" fill="#44506b"/>
+          <rect x="88" y="220" width="8" height="36" rx="4" fill="#44506b"/>
+          <rect x="104" y="220" width="8" height="36" rx="4" fill="#44506b"/>
+          <circle cx="303" cy="165" r="16" fill="#efb399"/>
+          <rect x="294" y="180" width="18" height="42" rx="9" fill="#44506b"/>
+          <rect x="294" y="191" width="38" height="8" rx="4" fill="#44506b"/>
+          <rect x="296" y="220" width="8" height="36" rx="4" fill="#44506b"/>
+          <rect x="312" y="220" width="8" height="36" rx="4" fill="#44506b"/>
+          <rect x="126" y="178" width="44" height="28" rx="8" fill="#7aa6de"/>
+          <rect x="176" y="150" width="44" height="56" rx="8" fill="#ffd26b"/>
+          <rect x="226" y="122" width="44" height="84" rx="8" fill="#ef7d7d"/>
+          <text x="148" y="197" text-anchor="middle" font-size="16" font-weight="900" fill="#ffffff">T</text>
+          <text x="198" y="186" text-anchor="middle" font-size="16" font-weight="900" fill="#ffffff">R</text>
+          <text x="248" y="175" text-anchor="middle" font-size="16" font-weight="900" fill="#ffffff">U</text>
+          <path d="M108 190c9-5 12-6 17-6" stroke="#17a36b" stroke-width="6" fill="none" stroke-linecap="round"/>
+          <path d="M275 184c6 0 10 2 16 6" stroke="#2e6fdf" stroke-width="6" fill="none" stroke-linecap="round"/>
+        </svg>`,
+      trustVerb: () => `
+        <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+          <rect width="400" height="300" fill="#dce8f5"/>
+          <rect y="214" width="400" height="86" fill="#e6dccd"/>
+          <circle cx="83" cy="60" r="22" fill="#f2c042"/>
+          <rect x="277" y="94" width="78" height="112" rx="12" fill="#8eb2e4"/>
+          <rect x="295" y="118" width="44" height="88" rx="4" fill="#fff6ec"/>
+          <circle cx="124" cy="155" r="17" fill="#e8a185"/>
+          <rect x="114" y="171" width="20" height="46" rx="10" fill="#44506b"/>
+          <rect x="96" y="181" width="44" height="8" rx="4" fill="#44506b"/>
+          <rect x="116" y="215" width="9" height="40" rx="4.5" fill="#44506b"/>
+          <rect x="135" y="215" width="9" height="40" rx="4.5" fill="#44506b"/>
+          <circle cx="235" cy="151" r="17" fill="#efb399"/>
+          <rect x="225" y="167" width="20" height="46" rx="10" fill="#44506b"/>
+          <rect x="224" y="179" width="42" height="8" rx="4" fill="#44506b" transform="rotate(-8 224 179)"/>
+          <rect x="227" y="211" width="9" height="40" rx="4.5" fill="#44506b"/>
+          <rect x="246" y="211" width="9" height="40" rx="4.5" fill="#44506b"/>
+          <path d="M145 180c17-8 35-12 57-7" stroke="#17a36b" stroke-width="6" fill="none" stroke-linecap="round"/>
+          <rect x="180" y="162" width="24" height="12" rx="4" fill="#ffd26b"/>
+          <circle cx="202" cy="168" r="7" fill="none" stroke="#ffd26b" stroke-width="4"/>
+        </svg>`,
+      authenticity: () => `
+        <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+          <rect width="400" height="300" fill="#dce8f5"/>
+          <rect y="216" width="400" height="84" fill="#eef1f7"/>
+          <circle cx="318" cy="58" r="22" fill="#f2c042"/>
+          <circle cx="80" cy="143" r="14" fill="#ffffff" stroke="#9fb3d4" stroke-width="4"/>
+          <path d="M71 142c6-7 11-9 16-9s10 2 16 9" stroke="#9fb3d4" stroke-width="3" fill="none"/>
+          <path d="M77 151c4 3 7 4 10 4s6-1 10-4" stroke="#9fb3d4" stroke-width="3" fill="none"/>
+          <circle cx="136" cy="143" r="14" fill="#ffffff" stroke="#9fb3d4" stroke-width="4"/>
+          <path d="M127 142c6-7 11-9 16-9s10 2 16 9" stroke="#9fb3d4" stroke-width="3" fill="none"/>
+          <path d="M133 151c4 3 7 4 10 4s6-1 10-4" stroke="#9fb3d4" stroke-width="3" fill="none"/>
+          <circle cx="192" cy="143" r="14" fill="#ffffff" stroke="#9fb3d4" stroke-width="4"/>
+          <path d="M183 142c6-7 11-9 16-9s10 2 16 9" stroke="#9fb3d4" stroke-width="3" fill="none"/>
+          <path d="M189 151c4 3 7 4 10 4s6-1 10-4" stroke="#9fb3d4" stroke-width="3" fill="none"/>
+          <circle cx="299" cy="149" r="17" fill="#efb399"/>
+          <rect x="289" y="166" width="20" height="46" rx="10" fill="#44506b"/>
+          <rect x="270" y="177" width="44" height="8" rx="4" fill="#44506b"/>
+          <rect x="292" y="210" width="9" height="40" rx="4.5" fill="#44506b"/>
+          <rect x="311" y="210" width="9" height="40" rx="4.5" fill="#44506b"/>
+          <path d="M282 133c8 8 14 10 20 10s12-2 20-10" stroke="#ef4e5b" stroke-width="6" fill="none" stroke-linecap="round"/>
+          <path d="M285 106c21-14 42-14 62 0" stroke="#17a36b" stroke-width="6" fill="none" stroke-linecap="round"/>
+        </svg>`,
+      frank: () => `
+        <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+          <rect width="400" height="300" fill="#dce8f5"/>
+          <rect y="220" width="400" height="80" fill="#edf0f5"/>
+          <rect x="128" y="158" width="144" height="16" rx="8" fill="#8faad2"/>
+          <rect x="191" y="173" width="18" height="44" rx="9" fill="#8faad2"/>
+          <rect x="76" y="94" width="86" height="46" rx="10" fill="#7aa6de"/>
+          <rect x="237" y="94" width="86" height="46" rx="10" fill="#ffd26b"/>
+          <circle cx="121" cy="145" r="17" fill="#e8a185"/>
+          <rect x="111" y="161" width="20" height="43" rx="10" fill="#44506b"/>
+          <rect x="92" y="172" width="40" height="8" rx="4" fill="#44506b" transform="rotate(8 92 172)"/>
+          <rect x="114" y="203" width="9" height="39" rx="4.5" fill="#44506b"/>
+          <rect x="133" y="203" width="9" height="39" rx="4.5" fill="#44506b"/>
+          <circle cx="278" cy="145" r="17" fill="#efb399"/>
+          <rect x="268" y="161" width="20" height="43" rx="10" fill="#44506b"/>
+          <rect x="266" y="172" width="40" height="8" rx="4" fill="#44506b" transform="rotate(-8 266 172)"/>
+          <rect x="271" y="203" width="9" height="39" rx="4.5" fill="#44506b"/>
+          <rect x="290" y="203" width="9" height="39" rx="4.5" fill="#44506b"/>
+          <path d="M145 116c31-14 65-14 98 0" stroke="#ef4e5b" stroke-width="6" fill="none" stroke-linecap="round"/>
+          <path d="M236 109l14 7-15 7" fill="#ef4e5b"/>
+        </svg>`,
+      integrity: () => `
+        <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+          <rect width="400" height="300" fill="#dce8f5"/>
+          <path d="M0 215c70-20 133-19 188-8 56 12 122 12 212-6v99H0z" fill="#b8d99a"/>
+          <path d="M200 300V190" stroke="#9fb0c8" stroke-width="12" stroke-linecap="round"/>
+          <path d="M200 190l-86-34" stroke="#9fb0c8" stroke-width="12" stroke-linecap="round"/>
+          <path d="M200 190l88-27" stroke="#9fb0c8" stroke-width="12" stroke-linecap="round"/>
+          <rect x="92" y="126" width="56" height="28" rx="10" fill="#ef7d7d"/>
+          <text x="120" y="145" text-anchor="middle" font-size="14" font-weight="900" fill="#fff">WRONG</text>
+          <rect x="262" y="132" width="58" height="28" rx="10" fill="#17a36b"/>
+          <text x="291" y="151" text-anchor="middle" font-size="14" font-weight="900" fill="#fff">RIGHT</text>
+          <circle cx="205" cy="171" r="17" fill="#e8a185"/>
+          <rect x="195" y="187" width="20" height="46" rx="10" fill="#44506b"/>
+          <rect x="177" y="198" width="21" height="8" rx="4" fill="#44506b" transform="rotate(-25 177 198)"/>
+          <rect x="212" y="198" width="23" height="8" rx="4" fill="#44506b" transform="rotate(18 212 198)"/>
+          <rect x="198" y="231" width="9" height="39" rx="4.5" fill="#44506b"/>
+          <rect x="217" y="231" width="9" height="39" rx="4.5" fill="#44506b"/>
+          <circle cx="324" cy="58" r="22" fill="#f2c042"/>
+        </svg>`,
+      just: () => `
+        <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+          <rect width="400" height="300" fill="#dce8f5"/>
+          <rect y="216" width="400" height="84" fill="#eef1f6"/>
+          <rect x="190" y="100" width="18" height="88" rx="9" fill="#7f90af"/>
+          <rect x="152" y="118" width="94" height="10" rx="5" fill="#7f90af"/>
+          <line x1="170" y1="128" x2="170" y2="164" stroke="#7f90af" stroke-width="4"/>
+          <line x1="230" y1="128" x2="230" y2="164" stroke="#7f90af" stroke-width="4"/>
+          <path d="M170 136l-20 34h40z" fill="#ffd26b"/>
+          <path d="M230 136l-20 34h40z" fill="#ffd26b"/>
+          <circle cx="100" cy="160" r="16" fill="#e8a185"/>
+          <rect x="91" y="175" width="18" height="42" rx="9" fill="#44506b"/>
+          <rect x="74" y="185" width="39" height="8" rx="4" fill="#44506b"/>
+          <rect x="93" y="215" width="8" height="38" rx="4" fill="#44506b"/>
+          <rect x="109" y="215" width="8" height="38" rx="4" fill="#44506b"/>
+          <circle cx="300" cy="160" r="16" fill="#efb399"/>
+          <rect x="291" y="175" width="18" height="42" rx="9" fill="#44506b"/>
+          <rect x="287" y="185" width="39" height="8" rx="4" fill="#44506b"/>
+          <rect x="293" y="215" width="8" height="38" rx="4" fill="#44506b"/>
+          <rect x="309" y="215" width="8" height="38" rx="4" fill="#44506b"/>
+          <circle cx="200" cy="196" r="16" fill="#f0b499"/>
+          <rect x="191" y="211" width="18" height="40" rx="9" fill="#44506b"/>
+        </svg>`,
+      openness: () => `
+        <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+          <rect width="400" height="300" fill="#dce8f5"/>
+          <rect y="219" width="400" height="81" fill="#f0e4d6"/>
+          <rect x="102" y="176" width="196" height="14" rx="7" fill="#b98457"/>
+          <rect x="118" y="190" width="14" height="40" rx="7" fill="#b98457"/>
+          <rect x="268" y="190" width="14" height="40" rx="7" fill="#b98457"/>
+          <circle cx="117" cy="146" r="14" fill="#e8a185"/>
+          <rect x="109" y="160" width="16" height="26" rx="8" fill="#44506b"/>
+          <circle cx="171" cy="134" r="14" fill="#efb399"/>
+          <rect x="163" y="148" width="16" height="26" rx="8" fill="#44506b"/>
+          <circle cx="228" cy="134" r="14" fill="#e8a185"/>
+          <rect x="220" y="148" width="16" height="26" rx="8" fill="#44506b"/>
+          <circle cx="283" cy="146" r="14" fill="#efb399"/>
+          <rect x="275" y="160" width="16" height="26" rx="8" fill="#44506b"/>
+          <path d="M133 118c16-10 35-13 52-9" stroke="#ef4e5b" stroke-width="5" fill="none" stroke-linecap="round"/>
+          <path d="M213 108c18-3 36 0 53 10" stroke="#17a36b" stroke-width="5" fill="none" stroke-linecap="round"/>
+          <circle cx="83" cy="58" r="22" fill="#f2c042"/>
+        </svg>`,
+      plain: () => `
+        <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+          <rect width="400" height="300" fill="#dce8f5"/>
+          <rect y="214" width="400" height="86" fill="#eef1f6"/>
+          <circle cx="319" cy="58" r="22" fill="#f2c042"/>
+          <circle cx="104" cy="156" r="17" fill="#e8a185"/>
+          <rect x="94" y="172" width="20" height="46" rx="10" fill="#44506b"/>
+          <rect x="76" y="182" width="40" height="8" rx="4" fill="#44506b"/>
+          <rect x="96" y="216" width="9" height="40" rx="4.5" fill="#44506b"/>
+          <rect x="115" y="216" width="9" height="40" rx="4.5" fill="#44506b"/>
+          <circle cx="286" cy="156" r="17" fill="#efb399"/>
+          <rect x="276" y="172" width="20" height="46" rx="10" fill="#44506b"/>
+          <rect x="272" y="183" width="41" height="8" rx="4" fill="#44506b" transform="rotate(-12 272 183)"/>
+          <rect x="278" y="216" width="9" height="40" rx="4.5" fill="#44506b"/>
+          <rect x="297" y="216" width="9" height="40" rx="4.5" fill="#44506b"/>
+          <path d="M145 122h108c12 0 22 10 22 22s-10 22-22 22H181l-32 20 11-20h-15c-12 0-22-10-22-22s10-22 22-22z" fill="#ffffff" stroke="#9fb2d4" stroke-width="4"/>
+          <text x="196" y="145" text-anchor="middle" font-size="20" font-weight="900" fill="#2e6fdf">TRUTH</text>
+          <rect x="170" y="151" width="52" height="7" rx="3.5" fill="#ef4e5b"/>
+        </svg>`,
+      straightforward: () => `
+        <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+          <rect width="400" height="300" fill="#dce8f5"/>
+          <rect y="214" width="400" height="86" fill="#f0e4d6"/>
+          <rect x="248" y="102" width="96" height="108" rx="14" fill="#8eb2e4"/>
+          <rect x="262" y="116" width="68" height="80" rx="10" fill="#fffaf0"/>
+          <text x="296" y="160" text-anchor="middle" font-size="34" font-weight="900" fill="#2e6fdf">$20</text>
+          <circle cx="109" cy="156" r="17" fill="#e8a185"/>
+          <rect x="99" y="172" width="20" height="46" rx="10" fill="#44506b"/>
+          <rect x="81" y="182" width="40" height="8" rx="4" fill="#44506b"/>
+          <rect x="101" y="216" width="9" height="40" rx="4.5" fill="#44506b"/>
+          <rect x="120" y="216" width="9" height="40" rx="4.5" fill="#44506b"/>
+          <circle cx="196" cy="156" r="17" fill="#efb399"/>
+          <rect x="186" y="172" width="20" height="46" rx="10" fill="#44506b"/>
+          <rect x="189" y="183" width="41" height="8" rx="4" fill="#44506b" transform="rotate(-10 189 183)"/>
+          <rect x="188" y="216" width="9" height="40" rx="4.5" fill="#44506b"/>
+          <rect x="207" y="216" width="9" height="40" rx="4.5" fill="#44506b"/>
+          <path d="M126 134c16-10 33-14 47-12" stroke="#17a36b" stroke-width="6" fill="none" stroke-linecap="round"/>
+          <path d="M162 122l13 1-8 11" fill="#17a36b"/>
+        </svg>`,
+      trustworthy: () => `
+        <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+          <rect width="400" height="300" fill="#dce8f5"/>
+          <rect y="213" width="400" height="87" fill="#eef1f6"/>
+          <circle cx="84" cy="58" r="22" fill="#f2c042"/>
+          <circle cx="131" cy="154" r="17" fill="#e8a185"/>
+          <rect x="121" y="170" width="20" height="46" rx="10" fill="#44506b"/>
+          <rect x="103" y="181" width="40" height="8" rx="4" fill="#44506b"/>
+          <rect x="123" y="214" width="9" height="40" rx="4.5" fill="#44506b"/>
+          <rect x="142" y="214" width="9" height="40" rx="4.5" fill="#44506b"/>
+          <circle cx="270" cy="154" r="17" fill="#efb399"/>
+          <rect x="260" y="170" width="20" height="46" rx="10" fill="#44506b"/>
+          <rect x="257" y="181" width="41" height="8" rx="4" fill="#44506b" transform="rotate(-6 257 181)"/>
+          <rect x="262" y="214" width="9" height="40" rx="4.5" fill="#44506b"/>
+          <rect x="281" y="214" width="9" height="40" rx="4.5" fill="#44506b"/>
+          <rect x="178" y="144" width="44" height="34" rx="8" fill="#8c5d40"/>
+          <rect x="184" y="150" width="32" height="22" rx="5" fill="#f6deb0"/>
+          <path d="M140 182c13-9 21-11 34-12" stroke="#17a36b" stroke-width="6" fill="none" stroke-linecap="round"/>
+          <path d="M226 170c12 1 19 4 30 10" stroke="#2e6fdf" stroke-width="6" fill="none" stroke-linecap="round"/>
+        </svg>`,
+      truthful: () => `
+        <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+          <rect width="400" height="300" fill="#dce8f5"/>
+          <rect y="215" width="400" height="85" fill="#f0e3d4"/>
+          <rect x="56" y="126" width="104" height="84" rx="14" fill="#86a7d7"/>
+          <rect x="70" y="110" width="76" height="21" rx="10.5" fill="#6e92ca"/>
+          <circle cx="102" cy="143" r="15" fill="#e8a185"/>
+          <rect x="93" y="157" width="18" height="34" rx="9" fill="#44506b"/>
+          <circle cx="251" cy="155" r="17" fill="#efb399"/>
+          <rect x="241" y="171" width="20" height="46" rx="10" fill="#44506b"/>
+          <rect x="223" y="181" width="42" height="8" rx="4" fill="#44506b"/>
+          <rect x="243" y="215" width="9" height="40" rx="4.5" fill="#44506b"/>
+          <rect x="262" y="215" width="9" height="40" rx="4.5" fill="#44506b"/>
+          <circle cx="315" cy="155" r="17" fill="#e8a185"/>
+          <rect x="305" y="171" width="20" height="46" rx="10" fill="#44506b"/>
+          <rect x="303" y="183" width="41" height="8" rx="4" fill="#44506b" transform="rotate(-16 303 183)"/>
+          <rect x="307" y="215" width="9" height="40" rx="4.5" fill="#44506b"/>
+          <rect x="326" y="215" width="9" height="40" rx="4.5" fill="#44506b"/>
+          <path d="M126 102c24 0 41 8 56 22" stroke="#17a36b" stroke-width="6" fill="none" stroke-linecap="round"/>
+          <path d="M169 120l15 3-10 11" fill="#17a36b"/>
+        </svg>`,
+      decency: () => `
+        <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+          <rect width="400" height="300" fill="#dce8f5"/>
+          <rect y="218" width="400" height="82" fill="#cfe2b6"/>
+          <path d="M0 218c73-24 125-26 190-12 52 11 118 10 210-5v99H0z" fill="#aacf86"/>
+          <circle cx="318" cy="59" r="22" fill="#f2c042"/>
+          <circle cx="118" cy="158" r="17" fill="#e8a185"/>
+          <rect x="108" y="174" width="20" height="46" rx="10" fill="#44506b"/>
+          <rect x="90" y="185" width="41" height="8" rx="4" fill="#44506b"/>
+          <rect x="110" y="218" width="9" height="40" rx="4.5" fill="#44506b"/>
+          <rect x="129" y="218" width="9" height="40" rx="4.5" fill="#44506b"/>
+          <circle cx="286" cy="156" r="17" fill="#efb399"/>
+          <rect x="276" y="172" width="20" height="46" rx="10" fill="#44506b"/>
+          <rect x="258" y="183" width="41" height="8" rx="4" fill="#44506b" transform="rotate(-14 258 183)"/>
+          <rect x="278" y="216" width="9" height="40" rx="4.5" fill="#44506b"/>
+          <rect x="297" y="216" width="9" height="40" rx="4.5" fill="#44506b"/>
+          <rect x="182" y="179" width="25" height="14" rx="5" fill="#2e6fdf"/>
+          <circle cx="190" cy="168" r="8" fill="#ffd260"/>
+          <circle cx="208" cy="168" r="8" fill="#ffd260"/>
+          <path d="M133 185c16-10 29-14 43-15" stroke="#17a36b" stroke-width="6" fill="none" stroke-linecap="round"/>
+          <path d="M213 177c16 0 27 4 39 12" stroke="#ef4e5b" stroke-width="6" fill="none" stroke-linecap="round"/>
+        </svg>`,
+      straight: () => `
+        <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+          <rect width="400" height="300" fill="#dce8f5"/>
+          <rect y="214" width="400" height="86" fill="#eef1f7"/>
+          <circle cx="83" cy="60" r="22" fill="#f2c042"/>
+          <rect x="175" y="106" width="56" height="76" rx="12" fill="#8fb3e5"/>
+          <rect x="186" y="119" width="34" height="23" rx="5" fill="#fff"/>
+          <circle cx="111" cy="156" r="17" fill="#e8a185"/>
+          <rect x="101" y="172" width="20" height="46" rx="10" fill="#44506b"/>
+          <rect x="83" y="183" width="41" height="8" rx="4" fill="#44506b"/>
+          <rect x="103" y="216" width="9" height="40" rx="4.5" fill="#44506b"/>
+          <rect x="122" y="216" width="9" height="40" rx="4.5" fill="#44506b"/>
+          <circle cx="286" cy="156" r="17" fill="#efb399"/>
+          <rect x="276" y="172" width="20" height="46" rx="10" fill="#44506b"/>
+          <rect x="275" y="183" width="41" height="8" rx="4" fill="#44506b" transform="rotate(-12 275 183)"/>
+          <rect x="278" y="216" width="9" height="40" rx="4.5" fill="#44506b"/>
+          <rect x="297" y="216" width="9" height="40" rx="4.5" fill="#44506b"/>
+          <path d="M136 129c18-16 41-21 67-13" stroke="#2e6fdf" stroke-width="7" fill="none" stroke-linecap="round"/>
+          <path d="M206 118l13 6-13 8" fill="#2e6fdf"/>
+          <path d="M215 135c18-6 35-6 52 1" stroke="#ef4e5b" stroke-width="6" fill="none" stroke-linecap="round"/>
+        </svg>`
+    };
+
+    const vocabularyData = [
+      { word:'honest', pos:'adjective', arabicWord:'صادق / أمين', collocation:'be honest with someone', arabicCollocation:'يكون صادقًا / صريحًا مع شخص', example:'I was honest with my teacher about why I was late.', scene:'honest' },
+      { word:'decent', pos:'adjective', arabicWord:'محترم / خلوق', collocation:'a decent person', arabicCollocation:'شخص محترم / خلوق', example:'My uncle is a decent person and always tries to do the right thing.', scene:'decent' },
+      { word:'genuine', pos:'adjective', arabicWord:'صادق / حقيقي', collocation:'a genuine apology', arabicCollocation:'اعتذار صادق', example:'She gave me a genuine apology after she broke my phone.', scene:'genuine' },
+      { word:'honesty', pos:'noun', arabicWord:'الصدق / الأمانة', collocation:'complete honesty', arabicCollocation:'صدق تام / صراحة تامة', example:'She spoke with complete honesty about what happened.', scene:'honesty' },
+      { word:'open', pos:'adjective', arabicWord:'صريح / منفتح', collocation:'be open with someone', arabicCollocation:'يكون صريحًا مع شخص', example:'I try to be open with my parents when I have a problem.', scene:'open' },
+      { word:'trust', pos:'noun', arabicWord:'الثقة', collocation:'build trust', arabicCollocation:'يبني الثقة', example:'Keeping your promises helps build trust with other people.', scene:'trustNoun' },
+      { word:'trust', pos:'verb', arabicWord:'يثق بـ', collocation:'trust someone', arabicCollocation:'يثق بشخص', example:'I trust my best friend because she never lies to me.', scene:'trustVerb' },
+      { word:'authenticity', pos:'noun', arabicWord:'الأصالة / الصدق مع النفس', collocation:'personal authenticity', arabicCollocation:'الأصالة الشخصية / الصدق مع النفس', example:'People respect her personal authenticity because she is always herself.', scene:'authenticity' },
+      { word:'frank', pos:'adjective', arabicWord:'صريح', collocation:'a frank discussion', arabicCollocation:'مناقشة صريحة', example:'I had a frank discussion with my manager about the problem.', scene:'frank' },
+      { word:'integrity', pos:'noun', arabicWord:'النزاهة / الاستقامة', collocation:'act with integrity', arabicCollocation:'يتصرف بنزاهة', example:'He acted with integrity and returned the wallet he found.', scene:'integrity' },
+      { word:'just', pos:'adjective', arabicWord:'عادل', collocation:'a just decision', arabicCollocation:'قرار عادل', example:'The teacher made a just decision and listened to both students.', scene:'just' },
+      { word:'openness', pos:'noun', arabicWord:'الصراحة / الانفتاح', collocation:'openness and honesty', arabicCollocation:'الصراحة والصدق', example:'Openness and honesty help us solve problems in our family.', scene:'openness' },
+      { word:'plain', pos:'adjective', arabicWord:'صريح / واضح', collocation:'the plain truth', arabicCollocation:'الحقيقة الصريحة', example:'I told him the plain truth about what happened.', scene:'plain' },
+      { word:'straightforward', pos:'adjective', arabicWord:'صريح ومباشر', collocation:'a straightforward answer', arabicCollocation:'إجابة صريحة ومباشرة', example:'She gave me a straightforward answer when I asked about the cost.', scene:'straightforward' },
+      { word:'trustworthy', pos:'adjective', arabicWord:'جدير بالثقة / موثوق', collocation:'a trustworthy friend', arabicCollocation:'صديق جدير بالثقة', example:'Maya is a trustworthy friend, so I can tell her important things.', scene:'trustworthy' },
+      { word:'truthful', pos:'adjective', arabicWord:'صادق', collocation:'a truthful answer', arabicCollocation:'إجابة صادقة', example:'Please give me a truthful answer about what happened.', scene:'truthful' },
+      { word:'decency', pos:'noun', arabicWord:'حسن الخلق / اللياقة', collocation:'basic decency', arabicCollocation:'أبسط قواعد حسن الخلق / الاحترام', example:'He showed basic decency and returned the money he found.', scene:'decency' },
+      { word:'straight', pos:'adjective', arabicWord:'صريح / مباشر', collocation:'a straight answer', arabicCollocation:'إجابة صريحة ومباشرة', example:'I asked him for a straight answer about the missing money.', scene:'straight' }
+    ];
+
+    const homeScreen = document.getElementById('homeScreen');
+    const vocabScreen = document.getElementById('vocabScreen');
+    const startBtn = document.getElementById('startBtn');
+    const homeBtn = document.getElementById('homeBtn');
+    const pageSummary = document.getElementById('pageSummary');
+    const pagePill = document.getElementById('pagePill');
+    const cardGrid = document.getElementById('cardGrid');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const dots = document.getElementById('dots');
+    const modal = document.getElementById('exampleModal');
+    const modalCollocation = document.getElementById('modalCollocation');
+    const modalExample = document.getElementById('modalExample');
+    const modalCollocationAudio = document.getElementById('modalCollocationAudio');
+    const modalExampleAudio = document.getElementById('modalExampleAudio');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+
+    modalCollocationAudio.innerHTML = headsetIcon;
+    modalExampleAudio.innerHTML = headsetIcon;
+
+    let currentPage = 0;
+    let activeModalItem = null;
+    let lastFocused = null;
+    const revealTimers = new Map();
+    const totalPages = Math.ceil(vocabularyData.length / PAGE_SIZE);
+
+    startBtn.addEventListener('click', () => showScreen(vocabScreen));
+    homeBtn.addEventListener('click', () => showScreen(homeScreen));
+
+    function showScreen(screen){
+      [homeScreen, vocabScreen].forEach(el => el.classList.remove('active'));
+      screen.classList.add('active');
+      window.scrollTo({top:0, behavior:'smooth'});
+    }
+
+    function pickBritishFemaleVoice(){
+      const voices = speechSynthesis.getVoices() || [];
+      if(!voices.length) return null;
+      const femaleHints = ['female','woman','samantha','serena','martha','kate','fiona','hazel','libby','sonia','susan','zira','moira','victoria','alice','google uk english female'];
+      const maleHints = ['male','man','daniel','george','ryan','arthur','oliver'];
+      const scored = voices.map(voice => {
+        const name = (voice.name || '').toLowerCase();
+        const lang = (voice.lang || '').toLowerCase();
+        let score = 0;
+        if(lang === 'en-gb') score += 70;
+        else if(lang.startsWith('en-gb')) score += 65;
+        else if(lang.startsWith('en')) score += 25;
+        if(name.includes('google uk english female')) score += 90;
+        if(femaleHints.some(h => name.includes(h))) score += 30;
+        if(maleHints.some(h => name.includes(h))) score -= 35;
+        if(voice.localService) score += 4;
+        return {voice, score};
+      }).sort((a,b)=>b.score-a.score);
+      return scored[0]?.voice || null;
+    }
+
+    function speakBritish(text){
+      if(!('speechSynthesis' in window) || !text) return;
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'en-GB';
+      utterance.rate = 0.92;
+      utterance.pitch = 1.06;
+      const voice = pickBritishFemaleVoice();
+      if(voice) utterance.voice = voice;
+      window.speechSynthesis.speak(utterance);
+    }
+
+    if('speechSynthesis' in window){
+      speechSynthesis.getVoices();
+      if(typeof speechSynthesis.onvoiceschanged !== 'undefined') {
+        speechSynthesis.onvoiceschanged = () => speechSynthesis.getVoices();
+      }
+    }
+
+    function showTimedArabic(target, text, key){
+      target.textContent = text;
+      target.classList.add('show');
+      if(revealTimers.has(key)) clearTimeout(revealTimers.get(key));
+      const timer = setTimeout(() => target.classList.remove('show'), 3000);
+      revealTimers.set(key, timer);
+    }
+
+    function createCard(item, index){
+      const card = document.createElement('article');
+      card.className = 'card';
+      card.innerHTML = `
+        <div class="word-area">
+          <div class="word-row">
+            <div class="word-box">
+              <h2 class="word">${item.word}</h2>
+            </div>
+            <button class="icon-btn word-audio" type="button" aria-label="Listen to ${item.word}">${headsetIcon}</button>
+          </div>
+          <div class="pos">${item.pos}</div>
+        </div>
+
+        <div class="ar-wrap">
+          <button class="ar-btn ar-word" type="button" aria-label="Show Arabic meaning for ${item.word}">AR</button>
+          <div class="ar-text ar-word-text" aria-live="polite"></div>
+        </div>
+
+        <div class="art" aria-hidden="true">${sceneArt[item.scene]()}</div>
+
+        <div class="collocation-wrap">
+          <div class="collocation-row">
+            <p class="collocation">${item.collocation}</p>
+            <button class="icon-btn coll-audio" type="button" aria-label="Listen to ${item.collocation}">${headsetIcon}</button>
+          </div>
+          <div class="ar-wrap">
+            <button class="ar-btn ar-coll" type="button" aria-label="Show Arabic meaning for collocation ${item.collocation}">AR</button>
+            <div class="ar-text ar-coll-text" aria-live="polite"></div>
+          </div>
+        </div>
+
+        <div class="ex-wrap">
+          <button class="ex-btn" type="button" aria-label="Open example for ${item.word}">EX</button>
+        </div>
+      `;
+
+      const wordAudio = card.querySelector('.word-audio');
+      const collAudio = card.querySelector('.coll-audio');
+      const arWordBtn = card.querySelector('.ar-word');
+      const arWordText = card.querySelector('.ar-word-text');
+      const arCollBtn = card.querySelector('.ar-coll');
+      const arCollText = card.querySelector('.ar-coll-text');
+      const exBtn = card.querySelector('.ex-btn');
+
+      wordAudio.addEventListener('click', () => speakBritish(item.word));
+      collAudio.addEventListener('click', () => speakBritish(item.collocation));
+      arWordBtn.addEventListener('click', () => showTimedArabic(arWordText, item.arabicWord, `word-${index}`));
+      arCollBtn.addEventListener('click', () => showTimedArabic(arCollText, item.arabicCollocation, `coll-${index}`));
+      exBtn.addEventListener('click', () => openModal(item, exBtn));
+      return card;
+    }
+
+    function openModal(item, trigger){
+      activeModalItem = item;
+      lastFocused = trigger;
+      modalCollocation.textContent = item.collocation;
+      modalExample.textContent = item.example;
+      modal.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      closeModalBtn.focus();
+    }
+
+    function closeModal(){
+      modal.classList.remove('open');
+      document.body.style.overflow = '';
+      if(lastFocused) lastFocused.focus();
+    }
+
+    closeModalBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', e => { if(e.target === modal) closeModal(); });
+    document.addEventListener('keydown', e => { if(e.key === 'Escape' && modal.classList.contains('open')) closeModal(); });
+    modalCollocationAudio.addEventListener('click', () => activeModalItem && speakBritish(activeModalItem.collocation));
+    modalExampleAudio.addEventListener('click', () => activeModalItem && speakBritish(activeModalItem.example));
+
+    function renderDots(){
+      dots.innerHTML = '';
+      for(let i=0;i<totalPages;i++){
+        const dot = document.createElement('button');
+        dot.className = `dot${i===currentPage ? ' active':''}`;
+        dot.type = 'button';
+        dot.setAttribute('aria-label', `Go to page ${i+1}`);
+        dot.addEventListener('click', () => { currentPage = i; renderPage(); });
+        dots.appendChild(dot);
+      }
+    }
+
+    function renderPage(){
+      const start = currentPage * PAGE_SIZE;
+      const items = vocabularyData.slice(start, start + PAGE_SIZE);
+      const end = start + items.length;
+      cardGrid.innerHTML = '';
+      cardGrid.classList.toggle('center-two', items.length === 2 && window.innerWidth > 1180);
+      items.forEach((item, localIndex) => cardGrid.appendChild(createCard(item, start + localIndex)));
+      pageSummary.textContent = `Words ${start+1}–${end} of ${vocabularyData.length}`;
+      pagePill.textContent = `Page ${currentPage+1} of ${totalPages}`;
+      prevBtn.disabled = currentPage === 0;
+      nextBtn.disabled = currentPage === totalPages - 1;
+      prevBtn.setAttribute('aria-disabled', String(currentPage === 0));
+      nextBtn.setAttribute('aria-disabled', String(currentPage === totalPages - 1));
+      renderDots();
+    }
+
+    prevBtn.addEventListener('click', () => {
+      if(currentPage > 0){ currentPage--; renderPage(); window.scrollTo({top:0, behavior:'smooth'}); }
+    });
+    nextBtn.addEventListener('click', () => {
+      if(currentPage < totalPages - 1){ currentPage++; renderPage(); window.scrollTo({top:0, behavior:'smooth'}); }
+    });
+
+    window.addEventListener('resize', () => {
+      const isCentered = cardGrid.classList.contains('center-two');
+      if(isCentered || currentPage === totalPages - 1) renderPage();
+    });
+
+    renderPage();
+  </script>
+</body>
+</html>
